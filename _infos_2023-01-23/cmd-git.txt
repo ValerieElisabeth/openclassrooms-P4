@@ -1,11 +1,16 @@
-LUNDI 28 NOVEMBRE 2022
+LUNDI 23 JANVIER 2023
 ///////////////////////////////////////////////////////////////////////////////////////
 
                         (1) C O M M A N D E S : GIT
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-Dernière version : MARDI 09 AOUT 2022
+Dernière version : LUNDI 23 JANVIER 2023
+INFOS :
+Ajout du résultat attendu à l'étape : 06
+Partie (2) C O M M A N D E S   :  GIT    S I M P L I F I É E S
+-------------------------------------------------------------------
+Précédente version : MARDI 09 AOUT 2022
 INFOS :
 Ajout de nouvelles commandes git, non évoquées chez Doranco.
 - Fusion des branches.
@@ -174,6 +179,9 @@ LISTE DES COMMANDES GIT détaillées :
 
 06. Voir les remotes existant.
             | git remote -v 
+RÉSULTAT ATTENDU (par exemple):
+origin  https://github.com/ValerieElisabeth/openclassrooms-P4.git (fetch)
+origin  https://github.com/ValerieElisabeth/openclassrooms-P4.git (push)
 -------------------------------------------------------------------
 
 09. > > > > > OPTIONNEL < < < < <

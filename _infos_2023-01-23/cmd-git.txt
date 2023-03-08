@@ -68,9 +68,12 @@ LISTE DES COMMANDES GIT détaillées :
             | git commit -m "first commit"
             | git commit -m "
 
-5a. Modifier le nom du dernier commit effectué : 
+5b. Modifier le nom du dernier commit effectué : 
             | git commit --amand -m "Tapez votre (NOUVEAU NOM) de message"
 
+(ligne ajoutées le 23 janvier 2023)
+5c. Aller sur la branche principale : 
+            | git branch -M main
 ----------------------------------------------------------------------------------------------
 °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
 
@@ -90,6 +93,10 @@ LISTE DES COMMANDES GIT détaillées :
 
 6. Voir les remotes existant
             | git remote -v 
+
+RÉSULTAT ATTENDU (par exemple):
+origin  https://github.com/ValerieElisabeth/openclassrooms-P4.git (fetch)
+origin  https://github.com/ValerieElisabeth/openclassrooms-P4.git (push)
 -------------------------------------------------------------------
 
 7. > > > > > OPTIONNEL < < < < <
@@ -98,8 +105,11 @@ LISTE DES COMMANDES GIT détaillées :
 -------------------------------------------------------------------
 
 8. Push les commits locaux sur GitHub
-            | git push origin
-            | git push -u origin main
+        (1) | git push origin
+        (2) | git push -u origin main
+INSTRUCTIONS :
+(1) D'abord rentrer la 1ère ligne de code.
+(2) Ensuite la 2ème.
 -------------------------------------------------------------------
 
 9. AU PREMIER COMMIT normalement, il faut... (Tapez la CMD (git) fournit par le terminal)

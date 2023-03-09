@@ -1,5 +1,5 @@
 :root {
-  --font-default: "DM Sans", Arial, Helvetica, sans-serif;
+  --font-default: 'DM Sans', Arial, Helvetica, sans-serif;
   --font-slab: var(--font-default);
   --modal-duration: 0.8s;
 }
@@ -10,15 +10,11 @@
 }
 /* Landing Page */
 
-.form {
-  border: solid 3px red;
-}
-
 body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  background-image: url("background.png");
+  background-image: url('background.png');
   font-family: var(--font-default);
   font-size: 18px;
   max-width: 1300px;
@@ -34,13 +30,12 @@ img {
   padding-right: 1rem;
 }
 
-input[type="radio"] {
+input[type='radio'] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   outline: none;
   display: transparent;
- 
 }
 
 .topnav {
@@ -212,6 +207,7 @@ label {
   font-size: 17px;
   font-weight: normal;
   display: inline-block;
+  margin-top: 11px;
   margin-bottom: 11px;
 }
 input {
@@ -228,23 +224,26 @@ input {
   height: 48px;
 }
 
+/* ATRIBUT QUI SERA RÉCUPÉRÉ
+dans mon fichier JS et à qui une valeur lui sera attribué contenant mon message d'erreur */
 .formData[data-error]::after {
   content: attr(data-error);
-  font-size: 0.4em;
+  font-size: 12px;
   color: #e54858;
   display: block;
   margin-top: 7px;
   margin-bottom: 7px;
   text-align: right;
-  line-height: 0.3;
+  letter-spacing: 1px;
+  line-height: 0.7;
   opacity: 0;
   transition: 0.3s;
 }
 
-.formData[data-error-visible="true"]::after {
+.formData[data-error-visible='true']::after {
   opacity: 1;
 }
-.formData[data-error-visible="true"] .text-control {
+.formData[data-error-visible='true'] .text-control {
   border: 2px solid #e54858;
 }
 /* 
@@ -276,7 +275,7 @@ input[data-error]::after {
 }
 .checkbox-label .checkbox-icon::after,
 .checkbox2-label .checkbox-icon::after {
-  content: "";
+  content: '';
   width: 13px;
   height: 13px;
   background-color: #279e7a;
@@ -331,7 +330,7 @@ input[data-error]::after {
 .close:after {
   position: absolute;
   left: 15px;
-  content: " ";
+  content: ' ';
   height: 33px;
   width: 3px;
   background-color: #fff;
@@ -372,7 +371,7 @@ input[data-error]::after {
 /* Style the arrow inside the select element: */
 .select-selected:after {
   position: absolute;
-  content: "";
+  content: '';
   top: 10px;
   right: 13px;
   width: 11px;
@@ -444,7 +443,7 @@ input[data-error]::after {
   min-width: 424px;
 }
 .hero-content::after {
-  content: "";
+  content: '';
   width: 100%;
   height: 100%;
   background: #232323;

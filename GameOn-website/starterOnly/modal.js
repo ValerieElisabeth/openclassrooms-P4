@@ -26,7 +26,7 @@ DOM Elements
 
 const modalbg = document.querySelector('.bground'); // (1)
 const modalBtn = document.querySelectorAll('.modal-btn'); // (2)
-const formData = document.querySelectorAll('.formData'); // ()
+const formData = document.querySelectorAll('.formData'); // (3)
 
 // Lance l'évènement de la modale au click de l'utilisateur
 modalBtn.forEach((btn) => btn.addEventListener('click', launchModal));
@@ -36,11 +36,11 @@ function launchModal() {
   modalbg.style.display = 'block';
 }
 
+// Fermeture : du formulaire de la modale
 function closeModal() {
   modalbg.style.display = 'none';
 }
 
-// Fermeture : du formulaire de la modale
 let closedWindow = document.querySelector('.close');
 closedWindow.addEventListener('click', closeModal);
 
@@ -50,54 +50,50 @@ closedWindow.addEventListener('click', closeModal);
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
 
-                          LES FONCTIONS DE VALIDATION DES CHAMPS
+                    FONCTIONS QUI TESTENT LES VALIDATION DU FORMULAIRE
+                            (par des valeurs Booléennes)
 
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
 
 */
+
 //
 // ---- TEST : NOM ET PRÉNOM -------------------------------------------------------------------
+allInputsValid = false;
 
 function testString(string) {
-  allInputsAreTrue = false;
-
   const stringPattern =
-    /^[a-zA-ZÀ-ÖØ-öø-ÿ]+([\-'][a-zA-ZÀ-ÖØ-öø-ÿ]+)*\s[a-zA-ZÀ-ÖØ-öø-ÿ]+([\-'][a-zA-ZÀ-ÖØ-öø-ÿ]+)*$/;
-
-  // return stringPattern.test(string);
-  if (stringPattern.test(string)) {
-    allInputsAreTrue = true;
-  }
-  if (!allInputsAreTrue) {
-    const firstNameContainer = document.querySelector('firstName');
-    const errorMsgFirstName = document.createElement('p');
-    errorMsgFirstName.innerText = 'Dois contenir au moins 2 sacatctères';
-    firstNameContainer.appendChild(errorMsgFirstName);
-  }
+    /^[\wÀ-ÖØ-öø-ÿéèêëôöûüçñ]{2,}(?:[\s-][\wÀ-ÖØ-öø-ÿéèêëôöûüçñ]{2,}){0,2}$/i;
+  // console.log(stringPattern.test(string));
+  return stringPattern.test(string);
 }
-testString('Valérie');
+
+// testString('JEAN-MARIE');
 
 //
 // ---- TEST : ADRESSE E-MAIL -------------------------------------------------------------------
 
 function testEmail(string) {
-  const emailPattern = /^[a-z0-9\.]+[@]{1}[[a-z0-9]+[.]{1}[a-z]{2,10}$/;
-  // return emailPattern.test(string);
-  console.log(emailPattern.test(string));
+  const emailPattern =
+    // /^[a-z0-9\.]+[@]{1}[[a-z0-9]+[.]{1}[a-z]{2,10}$/;
+    /^([a-z0-9\.]+)?@[a-z0-9]+(\.[a-z]{2,10}){1,2}$/i;
+  // console.log(emailPattern.test(string));
+  return emailPattern.test(string);
 }
-testEmail('name580.jean@gmail.com');
+
+// testEmail('name580.jean@gmail.com');
 
 //
 // ---- TEST : DATE DE NAISSANCE ------------------------------------------------------------------
 
 function testDate(number) {
-  const emailPattern = /^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-  // return emailPattern.test(number);
-  console.log(emailPattern.test(number));
+  const datePattern = /^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+  // console.log(emailPattern.test(number));
+  return datePattern.test(number.value);
 }
-testDate('26/04/3990');
+// testDate('26/04/3990');
 
 // ---- TEST : BOUTON RADIO COCHÉ ------------------------------------------------------------------
 //
@@ -114,23 +110,6 @@ testDate('26/04/3990');
 // }
 // returnRadioValid();
 /*
-
-------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------
-
-                    FONCTIONS QUI TESTENT LES VALIDATION DU FORMULAIRE
-                            (par des valeurs Booléennes)
-
-------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------
-
-*/
-let form = document.querySelector('.form');
-
-console.log(form.firstName);
-/*
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
@@ -142,9 +121,120 @@ console.log(form.firstName);
 ------------------------------------------------------------------------------------------------
  
 */
-form.addEventListener('submut', function (e) {
-  e.preventDefault;
-  if (allInputsAreTrue) {
-    console.log('Le formulaire à bien été envoyé');
+
+const form = document.querySelector('.form');
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  //
+  /* EXPLICATIONS :
+    (1) On cible 1 champs par (cas) 'case' via la boucle forEach déclaré précédement.
+    (2) On cible les container parents de chaque classes : "firstName", "lastName"... c.a.d : les "div" ayant la classe : formData.
+    (3a)(3b) Initialisation des messages d'erreurs pour les champs : "firstName" et "lastName" s'ils étaient vide.
+    */
+
+  // INITIALISATION des messages d'erreurs personnalisés -------------------//
+  const errorEmptyMsg = 'Ce champ ne peut pas être vide.'; // (3a)
+  const errorMinimumString = 'Il faut au minimum 2 caractères'; // (3b)
+  const errorEmail = 'Veuillez saisir une adresse e-mail valide';
+  const errorDateMsg = 'Veuillez saisir une date valide';
+
+  //
+  const inputs = document.querySelectorAll('.form .formData input');
+  inputs.forEach((ciblerInput) => {
+    const allFormInputs = document.querySelector(`#${ciblerInput.id}`); // (1)
+    const container = allFormInputs.parentNode; // (2)
+    // console.log(ciblerInput.id);
+
+    // Mon switch case cible pointe vers les ID : "firstName" & "lastNAme" pour effectuer mes tests.
+    switch (ciblerInput.id) {
+      case 'firstName':
+      case 'lastName':
+        //
+        //
+        /* EXPLICATIONS :
+        CONDITION 1 :
+        (4) LA CONDITION 1 : Vérifie si les champs "firstName" & "lastNAme" sont vides. Dans ce cas, le message d'erreur précédement déclaré s'affiche.
+        (5) La fonction setAttribute()récupère l'attribue 'data-error' définit dans le CSS et lui donne la valeur du message précédement déclaré.
+            pout l'afficher APRÈS LA DIV ayant la classe "formData".
+        (6) Le CSS précise que si la valeur de 'data-error est true' alors le message passe d'une opacité 0 à 1 et s'affiche.
+
+        CONDITION 2 :
+        (7) CONDITION 2 : Vérifie que les conditions de la RegExp de ma fonction testString(), ne sont pas respectées.
+        Alors un autre message d'erreur sera affiché.
+        (8) Quand l'utilisateur rempli bien les champs les messages d'erreurs sont effacés du DOM
+        */
+
+        //
+        //
+        // TEST DES CHAMPS "firstName" & "lastNAme" -----------------------------//
+        // (4) CONDITION 1.
+        if (!allFormInputs.value) {
+          container.setAttribute('data-error', errorEmptyMsg); // (5)
+          container.setAttribute('data-error-visible', true); // (6)
+          //
+          //
+          // (7) CONDITION 2.
+        } else if (!testString(allFormInputs.value)) {
+          container.setAttribute('data-error', errorMinimumString);
+          container.setAttribute('data-error-visible', true);
+          //
+          //
+          // (8)
+        } else {
+          container.removeAttribute('data-error');
+          container.removeAttribute('data-error-visible');
+        }
+        break;
+      //
+      //
+      // TEST DU CHAMPS "email" ----------------------------------------------------//
+
+      case 'email':
+        if (!allFormInputs.value) {
+          container.setAttribute('data-error', errorEmptyMsg);
+          container.setAttribute('data-error-visible', true);
+          //
+        } else if (!testEmail(allFormInputs.value)) {
+          container.setAttribute('data-error', errorEmail);
+          container.setAttribute('data-error-visible', true);
+          //
+          // (8)
+        } else {
+          container.removeAttribute('data-error');
+          container.removeAttribute('data-error-visible');
+        }
+        break;
+
+      case 'birthdate':
+        if (!allFormInputs.value) {
+          container.setAttribute('data-error', errorEmptyMsg);
+          container.setAttribute('data-error-visible', true);
+          //
+          // (8)
+        } else {
+          container.removeAttribute('data-error');
+          container.removeAttribute('data-error-visible');
+        }
+        break;
+
+      case 'quantity':
+        if (!allFormInputs.value) {
+          container.setAttribute('data-error', errorEmptyMsg);
+          container.setAttribute('data-error-visible', true);
+          //
+          // (8)
+        } else {
+          container.removeAttribute('data-error');
+          container.removeAttribute('data-error-visible');
+        }
+    }
+  });
+
+  //
+
+  if (allInputsValid) {
+    console.log('Le formulaire a bien été envoyé');
   }
 });

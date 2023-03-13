@@ -100,10 +100,12 @@ function testDate(number) {
 // function returnRadioValid() {
 //   let radioInputs = document.querySelectorAll('.form input[type="radio"]');
 //   radioInputs.forEach((cibler_inputs_radio) => {
-//     cibler_inputs_radio.addEventListener("change", function () {
+//     cibler_inputs_radio.addEventListener('change', function () {
 //       if (cibler_inputs_radio.checked) {
 //         return cibler_inputs_radio.value;
 //         // console.log(cibler_inputs_radio.value);
+//       } else if (!cibler_inputs_radio.checked) {
+//         return console.log("IL Y A UNE ERREUR");
 //       }
 //     });
 //   });
@@ -114,123 +116,224 @@ function testDate(number) {
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
 
+                          FONCTION QUI GÈRE LES MESSAGES D'ERREURS
+
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------    
+ /*
+ 
+ EXPLICATIONS :
+ CONDITION 1 :
+ (4) LA CONDITION 1 : Vérifie si les champs "firstName" & "lastNAme" sont vides. Dans ce cas, le message d'erreur précédement déclaré s'affiche.
+ (5) La fonction setAttribute()récupère l'attribue 'data-error' définit dans le CSS et lui donne la valeur du message précédement déclaré.
+     pout l'afficher APRÈS LA DIV ayant la classe "formData".
+ (6) Le CSS précise que si la valeur de 'data-error est true' alors le message passe d'une opacité 0 à 1 et s'affiche.
+
+ CONDITION 2 :
+ (7) CONDITION 2 : Vérifie que les conditions de la RegExp de ma fonction testString(), ne sont pas respectées.
+ Alors un autre message d'erreur sera affiché.
+ (8) Quand l'utilisateur rempli bien les champs les messages d'erreurs sont effacés du DOM
+ */
+
+function errorPersoMessage(
+  testFunction,
+  input, // => inputName ou inputRadio
+  container, // => containerInput pu containerRadio
+  errorEmptyMsg,
+  msgPerso
+) {
+  // (4) CONDITION 1.
+  if (!input.value) {
+    container.setAttribute('data-error', errorEmptyMsg); // (5)
+    container.setAttribute('data-error-visible', true); // (6)
+    //
+    //
+    // (7) CONDITION 2.
+  } else if (!testFunction(input.value)) {
+    container.setAttribute('data-error', msgPerso);
+    container.setAttribute('data-error-visible', true);
+    //
+    //
+    // (8)
+  } else {
+    container.removeAttribute('data-error');
+    container.removeAttribute('data-error-visible');
+  }
+}
+/*
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+
+                          FONCTION INPUT VIDES
+
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------    
+ */
+function errorEmptyMessage(input, container, errorEmptyMsg) {
+  //
+  if (!input.value) {
+    container.setAttribute('data-error', errorEmptyMsg);
+    container.setAttribute('data-error-visible', true);
+    //
+  } else {
+    container.removeAttribute('data-error');
+    container.removeAttribute('data-error-visible');
+  }
+}
+/*
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+
+                          FONCTION INPUTS RADIO
+
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------    
+ */
+function errorRadioMsg(
+  // testFunction,
+  input, // => inputName ou inputRadio
+  container, // => containerInput pu containerRadio
+  errorEmptyMsg,
+  msgPerso
+) {
+  if (!input.checked) {
+    container.setAttribute('data-error', errorEmptyMsg); // (5)
+    container.setAttribute('data-error-visible', true); // (6)
+    //
+    //
+    // (7) CONDITION 2.
+  } else if (!testFunction(input.checked)) {
+    container.setAttribute('data-error', msgPerso);
+    container.setAttribute('data-error-visible', true);
+    //
+    //
+    // (8)
+  } else {
+    container.removeAttribute('data-error');
+    container.removeAttribute('data-error-visible');
+  }
+}
+/*
+INITIALISATION des messages d'erreurs personnalisés -------------------------------//
+(3a)(3b) Initialisation des messages d'erreurs pour tous les champs du formulaire :
+"firstName" et "lastName" s'ils étaient vide.
+-------------------------------------------------------------------------------------
+*/
+const errorEmptyMsg = 'Ce champ ne peut pas être vide.'; // (3a)
+const errorMinimumString = 'Veuillez entrer 2 caractères ou plus'; // (3b)
+const errorbirthdateMsg = 'Veuillez saisir votre date de naissance';
+const errorEmail = 'Veuillez saisir une adresse e-mail valide';
+const errorRadioMessage = 'Vous devez choisir une option';
+let msgPerso;
+let inputName;
+let inputRadioName;
+let radioContainer;
+
+/*
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+
                           FONCTION FINALE DE VALIDATION DU FORMULAIRE
 
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
- 
+    
 */
 
 const form = document.querySelector('.form');
-
 form.addEventListener('submit', function (e) {
   e.preventDefault();
 
-  //
-  /* EXPLICATIONS :
-    (1) On cible 1 champs par (cas) 'case' via la boucle forEach déclaré précédement.
-    (2) On cible les container parents de chaque classes : "firstName", "lastName"... c.a.d : les "div" ayant la classe : formData.
-    (3a)(3b) Initialisation des messages d'erreurs pour les champs : "firstName" et "lastName" s'ils étaient vide.
-    */
+  /*
+  EXPLICATIONS :
+  (1) On cible 1 champs par (cas) 'case' via la boucle forEach déclaré précédement.
+  (2) On cible les container parents de chaque classes ciblées: "firstName", "lastName"...
+      c.a.d : les "div" ayant la classe : formData.
+  */
+  const allInputs = document.querySelectorAll('.form .formData input');
+  const allInputsRadio = document.querySelectorAll('.form input[type="radio"]');
 
-  // INITIALISATION des messages d'erreurs personnalisés -------------------//
-  const errorEmptyMsg = 'Ce champ ne peut pas être vide.'; // (3a)
-  const errorMinimumString = 'Il faut au minimum 2 caractères'; // (3b)
-  const errorEmail = 'Veuillez saisir une adresse e-mail valide';
-  const errorDateMsg = 'Veuillez saisir une date valide';
-
-  //
-  const inputs = document.querySelectorAll('.form .formData input');
-  inputs.forEach((ciblerInput) => {
-    const allFormInputs = document.querySelector(`#${ciblerInput.id}`); // (1)
-    const container = allFormInputs.parentNode; // (2)
+  allInputs.forEach((ciblerInput) => {
+    inputName = document.querySelector(`#${ciblerInput.id}`); // (1)
+    const inputContainer = inputName.parentNode; // (2)
     // console.log(ciblerInput.id);
 
-    // Mon switch case cible pointe vers les ID : "firstName" & "lastNAme" pour effectuer mes tests.
     switch (ciblerInput.id) {
+      // TEST DES CHAMPS "firstName" & "lastNAme" ---------------------------------//
       case 'firstName':
       case 'lastName':
-        //
-        //
-        /* EXPLICATIONS :
-        CONDITION 1 :
-        (4) LA CONDITION 1 : Vérifie si les champs "firstName" & "lastNAme" sont vides. Dans ce cas, le message d'erreur précédement déclaré s'affiche.
-        (5) La fonction setAttribute()récupère l'attribue 'data-error' définit dans le CSS et lui donne la valeur du message précédement déclaré.
-            pout l'afficher APRÈS LA DIV ayant la classe "formData".
-        (6) Le CSS précise que si la valeur de 'data-error est true' alors le message passe d'une opacité 0 à 1 et s'affiche.
-
-        CONDITION 2 :
-        (7) CONDITION 2 : Vérifie que les conditions de la RegExp de ma fonction testString(), ne sont pas respectées.
-        Alors un autre message d'erreur sera affiché.
-        (8) Quand l'utilisateur rempli bien les champs les messages d'erreurs sont effacés du DOM
-        */
-
-        //
-        //
-        // TEST DES CHAMPS "firstName" & "lastNAme" -----------------------------//
-        // (4) CONDITION 1.
-        if (!allFormInputs.value) {
-          container.setAttribute('data-error', errorEmptyMsg); // (5)
-          container.setAttribute('data-error-visible', true); // (6)
-          //
-          //
-          // (7) CONDITION 2.
-        } else if (!testString(allFormInputs.value)) {
-          container.setAttribute('data-error', errorMinimumString);
-          container.setAttribute('data-error-visible', true);
-          //
-          //
-          // (8)
-        } else {
-          container.removeAttribute('data-error');
-          container.removeAttribute('data-error-visible');
-        }
+        errorPersoMessage(
+          testString,
+          inputName,
+          inputContainer,
+          errorEmptyMsg,
+          errorMinimumString
+        );
         break;
-      //
-      //
-      // TEST DU CHAMPS "email" ----------------------------------------------------//
 
+      // TEST DU CHAMPS "email" ----------------------------------------------------//
       case 'email':
-        if (!allFormInputs.value) {
-          container.setAttribute('data-error', errorEmptyMsg);
-          container.setAttribute('data-error-visible', true);
-          //
-        } else if (!testEmail(allFormInputs.value)) {
-          container.setAttribute('data-error', errorEmail);
-          container.setAttribute('data-error-visible', true);
-          //
-          // (8)
-        } else {
-          container.removeAttribute('data-error');
-          container.removeAttribute('data-error-visible');
-        }
+        errorPersoMessage(
+          testEmail,
+          inputName,
+          inputContainer,
+          errorEmptyMsg,
+          errorEmail
+        );
         break;
 
       case 'birthdate':
-        if (!allFormInputs.value) {
-          container.setAttribute('data-error', errorEmptyMsg);
-          container.setAttribute('data-error-visible', true);
-          //
-          // (8)
-        } else {
-          container.removeAttribute('data-error');
-          container.removeAttribute('data-error-visible');
-        }
+        errorEmptyMessage(
+          inputName,
+          inputContainer,
+          errorEmptyMsg,
+          errorbirthdateMsg
+        );
         break;
 
       case 'quantity':
-        if (!allFormInputs.value) {
-          container.setAttribute('data-error', errorEmptyMsg);
-          container.setAttribute('data-error-visible', true);
-          //
-          // (8)
-        } else {
-          container.removeAttribute('data-error');
-          container.removeAttribute('data-error-visible');
-        }
+        errorEmptyMessage(
+          inputName,
+          inputContainer,
+          errorEmptyMsg,
+          errorbirthdateMsg
+        );
+        break;
     }
   });
+
+  allInputsRadio.forEach((ciblerInput) => {
+    const inputRadioName = document.querySelector(`#${ciblerInput.id}`); // Cible le nom de l'ID de chaque ntb radio à chaque tour de boucle
+    const radioContainer = inputRadioName.parentNode;
+
+    switch (ciblerInput.id) {
+      // TEST DES CHAMPS "RADIOS" ---------------------------------//
+      case 'location1':
+        errorRadioMsg(
+          // returnRadioValid,
+          inputRadioName,
+          radioContainer,
+          errorEmptyMsg,
+          errorRadioMessage
+        );
+        break;
+    }
+  });
+
+  // switch (ciblerInputRadio.id) {
+  //   case 'location1':
+  //     if (!inputNameRadio.value) {
+  //       containerRadio.setAttribute('data-error', errorEmptyMsg);
+  //       containerRadio.setAttribute('data-error-visible', true);
+  //     }
+  // }
 
   //
 

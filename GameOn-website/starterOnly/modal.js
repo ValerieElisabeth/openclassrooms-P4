@@ -58,10 +58,10 @@ closedWindow.addEventListener('click', closeModal);
 ------------------------------------------------------------------------------------------------
 
 */
+// let allInputsValid = false;
 
 //
 // ---- TEST : NOM ET PRÉNOM -------------------------------------------------------------------
-allInputsValid = false;
 
 function testString(string) {
   const stringPattern =
@@ -95,22 +95,6 @@ function testDate(number) {
 }
 // testDate('26/04/3990');
 
-// ---- TEST : BOUTON RADIO COCHÉ ------------------------------------------------------------------
-//
-// function returnRadioValid() {
-//   let radioInputs = document.querySelectorAll('.form input[type="radio"]');
-//   radioInputs.forEach((cibler_inputs_radio) => {
-//     cibler_inputs_radio.addEventListener('change', function () {
-//       if (cibler_inputs_radio.checked) {
-//         return cibler_inputs_radio.value;
-//         // console.log(cibler_inputs_radio.value);
-//       } else if (!cibler_inputs_radio.checked) {
-//         return console.log("IL Y A UNE ERREUR");
-//       }
-//     });
-//   });
-// }
-// returnRadioValid();
 /*
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
@@ -145,21 +129,25 @@ function errorPersoMessage(
 ) {
   // (4) CONDITION 1.
   if (!input.value) {
+    allInputsValid = false;
     container.setAttribute('data-error', errorEmptyMsg); // (5)
     container.setAttribute('data-error-visible', true); // (6)
     //
     //
     // (7) CONDITION 2.
   } else if (!testFunction(input.value)) {
+    allInputsValid = false;
     container.setAttribute('data-error', msgPerso);
     container.setAttribute('data-error-visible', true);
     //
     //
     // (8)
   } else {
+    allInputsValid = true;
     container.removeAttribute('data-error');
     container.removeAttribute('data-error-visible');
   }
+  return allInputsValid;
 }
 /*
 ------------------------------------------------------------------------------------------------
@@ -174,14 +162,18 @@ function errorPersoMessage(
  */
 function errorEmptyMessage(input, container, errorEmptyMsg) {
   //
+
   if (!input.value) {
+    allInputsValid = false;
     container.setAttribute('data-error', errorEmptyMsg);
     container.setAttribute('data-error-visible', true);
     //
   } else {
+    allInputsValid = true;
     container.removeAttribute('data-error');
     container.removeAttribute('data-error-visible');
   }
+  return allInputsValid;
 }
 /*
 ------------------------------------------------------------------------------------------------
@@ -194,29 +186,37 @@ function errorEmptyMessage(input, container, errorEmptyMsg) {
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------    
  */
-function errorRadioMsg(
-  // testFunction,
-  input, // => inputName ou inputRadio
-  container, // => containerInput pu containerRadio
-  errorEmptyMsg,
-  msgPerso
-) {
-  if (!input.checked) {
-    container.setAttribute('data-error', errorEmptyMsg); // (5)
-    container.setAttribute('data-error-visible', true); // (6)
-    //
-    //
-    // (7) CONDITION 2.
-  } else if (!testFunction(input.checked)) {
+
+function errorRadioMsg(container, msgPerso) {
+  const allInputsRadio = document.querySelectorAll('.form input[type="radio"]');
+
+  /* Une boucle forEach permet de vériifer si 1 bouton radio est coché.
+  Si c'est le cas, la condition renvoe : TRUE */
+
+  let radioIsChecked = false;
+  allInputsRadio.forEach((input) => {
+    if (input.checked) {
+      radioIsChecked = true;
+      return;
+    }
+  });
+
+  /*
+  ENSUITE : notre condition vérifie si OUI on NON la valeur retounée est TRUE ?
+  Si ça n'est pas le cas, elle renvoi un message d'erreur, sinon elle efface les messages d'erreurs
+  */
+  if (!radioIsChecked) {
+    allInputsValid = false;
     container.setAttribute('data-error', msgPerso);
     container.setAttribute('data-error-visible', true);
     //
-    //
-    // (8)
   } else {
+    allInputsValid = true;
     container.removeAttribute('data-error');
     container.removeAttribute('data-error-visible');
   }
+
+  return allInputsValid;
 }
 /*
 INITIALISATION des messages d'erreurs personnalisés -------------------------------//
@@ -227,12 +227,14 @@ INITIALISATION des messages d'erreurs personnalisés ---------------------------
 const errorEmptyMsg = 'Ce champ ne peut pas être vide.'; // (3a)
 const errorMinimumString = 'Veuillez entrer 2 caractères ou plus'; // (3b)
 const errorbirthdateMsg = 'Veuillez saisir votre date de naissance';
+const errorDateMsg = 'Veuillez renseigner ce champs';
 const errorEmail = 'Veuillez saisir une adresse e-mail valide';
-const errorRadioMessage = 'Vous devez choisir une option';
+const errorRadioMessage = 'Veuillez choisir une option';
 let msgPerso;
 let inputName;
 let inputRadioName;
 let radioContainer;
+let allInputsValid = false; //
 
 /*
 ------------------------------------------------------------------------------------------------
@@ -290,52 +292,31 @@ form.addEventListener('submit', function (e) {
         break;
 
       case 'birthdate':
-        errorEmptyMessage(
-          inputName,
-          inputContainer,
-          errorEmptyMsg,
-          errorbirthdateMsg
-        );
+        errorEmptyMessage(inputName, inputContainer, errorbirthdateMsg);
         break;
 
       case 'quantity':
-        errorEmptyMessage(
-          inputName,
-          inputContainer,
-          errorEmptyMsg,
-          errorbirthdateMsg
-        );
+        errorEmptyMessage(inputName, inputContainer, errorDateMsg);
         break;
     }
   });
 
-  allInputsRadio.forEach((ciblerInput) => {
-    const inputRadioName = document.querySelector(`#${ciblerInput.id}`); // Cible le nom de l'ID de chaque ntb radio à chaque tour de boucle
+  allInputsRadio.forEach((ciblerInputRadio) => {
+    const inputRadioName = document.querySelector(`#${ciblerInputRadio.id}`); // Cible le nom de l'ID de chaque ntb radio à chaque tour de boucle
     const radioContainer = inputRadioName.parentNode;
 
-    switch (ciblerInput.id) {
+    switch (ciblerInputRadio.id) {
       // TEST DES CHAMPS "RADIOS" ---------------------------------//
       case 'location1':
-        errorRadioMsg(
-          // returnRadioValid,
-          inputRadioName,
-          radioContainer,
-          errorEmptyMsg,
-          errorRadioMessage
-        );
+      case 'location2':
+      case 'location3':
+      case 'location4':
+      case 'location5':
+      case 'location6':
+        errorRadioMsg(radioContainer, errorRadioMessage);
         break;
     }
   });
-
-  // switch (ciblerInputRadio.id) {
-  //   case 'location1':
-  //     if (!inputNameRadio.value) {
-  //       containerRadio.setAttribute('data-error', errorEmptyMsg);
-  //       containerRadio.setAttribute('data-error-visible', true);
-  //     }
-  // }
-
-  //
 
   if (allInputsValid) {
     console.log('Le formulaire a bien été envoyé');

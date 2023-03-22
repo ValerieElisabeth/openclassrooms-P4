@@ -233,7 +233,7 @@ dans mon fichier JS et à qui une valeur lui sera attribué contenant mon messag
   display: block;
   margin-top: 7px;
   margin-bottom: 7px;
-  text-align: right;
+  text-align: left;
   letter-spacing: 1px;
   line-height: 0.7;
   opacity: 0;
@@ -341,11 +341,12 @@ input[data-error]::after {
 .close:after {
   transform: rotate(-45deg);
 }
+
 .btn-submit,
 .btn-signup {
   background: #fe142f;
   display: block;
-  margin: 0 auto;
+  margin: 30px auto 0px auto;
   border-radius: 7px;
   font-size: 1rem;
   padding: 12px 82px;
@@ -553,3 +554,4 @@ footer {
     opacity: 1;
   }
 }
+

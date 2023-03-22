@@ -1,0 +1,91 @@
+1/ J'ai créer une classe form, pour cibler depuis mon fichier JS tous le formulaire.
+
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
+2/ J'ai placé sur cette classe un écouteur d'évènement sur le bouton "submit" pour gérér la validité de tous les boutons du formulaire.
+
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
+3/ Dans le fichiers JavaScript, la constante "modalBtn" ciblait 2 boutons : "je m'inscris"
+const modalBtn = document.querySelectorAll('.modal-btn');
+
+Un pour la version Desktop, l'autre pour la version mobile.
+
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
+7/ Une constante : formData ciblait les 7 classes communes à chaque input du formulaire.
+ces classes ont un lien avec les messages d'érreurs pré-stylés visibles dans le fichier CSS.
+
+.formData[data-error]::after {
+  content: attr(data-error);
+  font-size: 12px;
+  color: #e54858;
+  display: block;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  text-align: right;
+  letter-spacing: 1px;
+  line-height: 0.7;
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.formData[data-error-visible='true']::after {
+  opacity: 1;
+}
+.formData[data-error-visible='true'] .text-control {
+  border: 2px solid #e54858;
+}
+
+Étant donnée que cibler ces messages, je suis passé par la méthode : setAttribute()
+pour cibler l'attribut ==> attr(data-error); créé dans le CSS, pour afficher ces messages après leur container respectif, eux-mêmes ciblés, gâces aux ID de chaque éléments, j'ai donc supprimer la ligne de code qui ciblait toutes les classes : .formData, car je n'en ai pas eu besoin.
+
+===> la lighe ci-dessous à été supprimée du fichier modal.js
+// const formData = document.querySelector('.formData');
+
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
+ISSUES
+
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+IMPLÉMENTER LES ENTRÉES DU FORMULAIRE#2 
+- - - - - - - - - - - - - - - - - - - -
+(1) Lier les labels aux entrées dans le HTML en utilisant les attributs "for" et "id" dans le code existant. Corriger le code HTML quand nécessaire. =====> OK
+
+Lier les <label> à leur <input> spécifique en utilisant les attributs "for" sur les labels et "id" sur les inputs. 
+
+Cela permet de cliquer sur le label (ou étiquette, intitulé de l'input) pour directement sélectionner la zone d'écriture dans l'input associée. Cela permet d'améliorer l'accessibilité et l'expérience utilisateur.
+
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+(2) Utiliser du JavaScript pur (pas de jQuery) pour terminer le formulaire :
+
+    Le formulaire doit être valide quand l'utilisateur clique sur "Submit"
+    Les données doivent être saisies correctement :
+    (1) Le champ Prénom a un minimum de 2 caractères / n'est pas vide. =====> OK
+    (2) Le champ du nom de famille a un minimum de 2 caractères / n'est pas vide. =====> OK
+    (3) L'adresse électronique est valide. =====> OK
+    (4) Pour le nombre de concours, une valeur numérique est saisie. =====> OK
+    (5) Un bouton radio est sélectionné. =====> OK
+    (6) La case des conditions générales est cochée, l'autre case est facultative / peut être laissée décochée.
+    Conserver les données du formulaire (ne pas effacer le formulaire) lorsqu'il ne passe pas la validation.
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+AJOUTER VALIDATION OU MESSAGES D'ERREUR #3
+- - - - - - - - - - - - - - - - - - - - - - 
+Des messages d'erreur spécifiques doivent apparaître sous l'entrée qui n'est pas correcte.
+Les messages d'erreur doivent s'afficher sous le champ de saisie associé.
+
+    Exemples :
+    "Veuillez entrer 2 caractères ou plus pour le champ du nom."
+    "Vous devez choisir une option."
+    "Vous devez vérifier que vous acceptez les termes et conditions."
+    "Vous devez entrer votre date de naissance."
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+Après une validation réussie, inclure un message de confirmation de la soumission réussie pour l'utilisateur (ex. "Merci ! Votre réservation a été reçue.")

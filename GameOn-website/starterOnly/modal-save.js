@@ -120,6 +120,48 @@ function testQuantity(number) {
 }
 // testQuantity('valérie');
 
+//
+// ---- TEST : CHECKED INPUT type : RADIO COCHÉ ------------------------------------------------------
+
+function testInputRadioIsChecked() {
+  const allInputsRadio = document.querySelectorAll('.form input[type="radio"]');
+
+  /* Ici la boucle forEach permet de vériifer si 1 bouton radio est coché.
+  Si c'est le cas, la condition renvoie : TRUE 
+  (n) return; ne renvoie pas de valeur mais arrête la fonction forEach, dès que celle-ci à trouvé un input coché.*/
+
+  let radioIsChecked = false;
+
+  allInputsRadio.forEach((ciblerInput) => {
+    if (ciblerInput.checked) {
+      radioIsChecked = true;
+      return; // (n)
+    }
+  });
+  // console.log(radioIsChecked);
+  return radioIsChecked;
+}
+
+// ---- TEST : CHECKED INPUT type : CHECKBOX COCHÉ ------------------------------------------------------
+
+function testInputCheckboxIsChecked() {
+  const allInputsCheckbox = document.querySelectorAll(
+    '.form input[type="checkbox"]'
+  );
+  /* Une boucle forEach permet de vériifer si 1 bouton checkbox est coché.
+  Si c'est le cas, la condition renvoie : TRUE */
+
+  let checkboxIsChecked = false;
+
+  allInputsCheckbox.forEach((input) => {
+    if (input.checked) {
+      checkboxIsChecked = true;
+      return;
+    }
+  });
+  return checkboxIsChecked;
+}
+
 /*
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
@@ -131,26 +173,29 @@ function testQuantity(number) {
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------    
  /*
+ 
  EXPLICATIONS :
+ CONDITION 1 :
+ (4) LA CONDITION 1 : Vérifie si les champs "firstName" & "lastNAme" sont vides. Dans ce cas, le message d'erreur précédement déclaré s'affiche.
+ (5) Avec la méthode setAttribute() on récupère l'attribue 'data-error' qui à été définit dans le CSS, et on lui donne la valeur du message précédement déclaré, pout l'afficher APRÈS LA DIV ayant la classe "formData".
+ (6) Le CSS précise que si la valeur de 'data-error-visible' est égale à true' alors le message passe d'une opacité 0 à 1 et s'affiche.
 
-(A)
-(B)
-(C)
+ CONDITION 2 :
+ (7) CONDITION 2 : Vérifie que les conditions de la RegExp de ma fonction testString(), ne sont pas respectées.
+ Alors un autre message d'erreur sera affiché.
+ (8) Quand l'utilisateur rempli bien les champs les messages d'erreurs sont effacés du DOM
  */
 
-// FONCTION (A)
 function errorEmptyMessages(container, errorEmptyMsg) {
   container.setAttribute('data-error', errorEmptyMsg); // (5)
   container.setAttribute('data-error-visible', true); // (6)
 }
 
-// FONCTION (B)
 function errorPersoMessages(container, msgPerso) {
   container.setAttribute('data-error', msgPerso);
   container.setAttribute('data-error-visible', true);
 }
 
-// FONCTION (C)
 function removeMessages(container) {
   container.removeAttribute('data-error');
   container.removeAttribute('data-error-visible');
@@ -286,32 +331,11 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
   // TEST DES INPUTS RADIOS ------------------------------------------------------------//
   // -----------------------------------------------------------------------------------//
 
-  // Par défaut, mon bouton à cocher ne l'est pas. Il renvoie : false.
-  let radioIsChecked = false;
-
   // (r) Cible le nom de l'ID de chaque ntb radio à chaque tour de boucle.
   const allInputsRadio = document.querySelectorAll('.form input[type="radio"]');
   allInputsRadio.forEach((ciblerInputRadio) => {
     const inputRadioName = document.querySelector(`#${ciblerInputRadio.id}`); //(r)
     const radioContainer = inputRadioName.parentNode;
-
-    /* ---------------------------------------------------------------------------------//
-    FONCTION TEST : qui vérifie qu'un bouton radio est coché, grâce à la boucle forEach.
-    Si c'est le cas, la condition renvoie : TRUE.
-    (n) return; ne renvoie pas de valeur mais arrête la fonction forEach, (comme un breack),
-    dès que celle-ci touve l'input radio coché et ne parcours pas les autres boutons.
-    */
-
-    function testInputRadioIsChecked() {
-      if (ciblerInputRadio.checked) {
-        radioIsChecked = true;
-        return; // (n)
-      }
-      // console.log(radioIsChecked);
-      return radioIsChecked;
-    }
-
-    // ----------------------------------------------------------------------------------//
 
     switch (ciblerInputRadio.id) {
       // ---------------------------------------------------------------------------------//
@@ -344,44 +368,23 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
   // TEST DES INPUTS type : CHECKBOX --------------------------------------------------------//
   // ----------------------------------------------------------------------------------------//
 
-  // Par défaut, mon input de type checkbox est coché. Il renvoie : true.
-  let checkboxIsChecked = true;
-
   const allInputsCheckbox = document.querySelectorAll(
     '.form input[type="checkbox"]'
   );
-
   allInputsCheckbox.forEach((ciblerInputCheckbox) => {
     const inputCheckboxName = document.querySelector(
       `#${ciblerInputCheckbox.id}`
     );
     const checkboxConatiner = inputCheckboxName.parentNode;
 
-    /* ---------------------------------------------------------------------------------//
-    FONCTION TEST : qui vérifie qu'un bouton checkbox n'est pas coché, grâce à la boucle forEach.
-    Si c'est le cas, la condition renvoie : FALSE.
-    (n) return; ne renvoie pas de valeur mais arrête la fonction forEach, (comme un breack),
-    dès que celle-ci touve l'input checkbox NON coché et ne parcours pas les autres boutons.
-    */
-
-    function testInputCheckboxIsChecked() {
-      if (ciblerInputCheckbox.checked) {
-        checkboxIsChecked = false;
-        return; // (n)
-      }
-      console.log(checkboxIsChecked);
-      return checkboxIsChecked;
-    }
-
-    // ----------------------------------------------------------------------------------//
+    // -------------------------------------------------------------------------------------//
+    // TEST DES CHAMPS "CHECKBOX" ----------------------------------------------------------//
+    // -------------------------------------------------------------------------------------//
 
     switch (ciblerInputCheckbox.id) {
-      // -------------------------------------------------------------------------------------//
-      // TEST DES CHAMPS "CHECKBOX" ----------------------------------------------------------//
-      // -------------------------------------------------------------------------------------//
       case 'checkbox1':
         //
-        if (testInputCheckboxIsChecked(ciblerInputCheckbox.checked)) {
+        if (!testInputCheckboxIsChecked(ciblerInputCheckbox.value)) {
           allInputsValid = false;
           errorEmptyMessages(checkboxConatiner, errorCheckboxMessage);
           //

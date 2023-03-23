@@ -173,29 +173,26 @@ function testInputCheckboxIsChecked() {
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------    
  /*
- 
  EXPLICATIONS :
- CONDITION 1 :
- (4) LA CONDITION 1 : Vérifie si les champs "firstName" & "lastNAme" sont vides. Dans ce cas, le message d'erreur précédement déclaré s'affiche.
- (5) Avec la méthode setAttribute() on récupère l'attribue 'data-error' qui à été définit dans le CSS, et on lui donne la valeur du message précédement déclaré, pout l'afficher APRÈS LA DIV ayant la classe "formData".
- (6) Le CSS précise que si la valeur de 'data-error-visible' est égale à true' alors le message passe d'une opacité 0 à 1 et s'affiche.
 
- CONDITION 2 :
- (7) CONDITION 2 : Vérifie que les conditions de la RegExp de ma fonction testString(), ne sont pas respectées.
- Alors un autre message d'erreur sera affiché.
- (8) Quand l'utilisateur rempli bien les champs les messages d'erreurs sont effacés du DOM
+(A)
+(B)
+(C)
  */
 
+// FONCTION (A)
 function errorEmptyMessages(container, errorEmptyMsg) {
   container.setAttribute('data-error', errorEmptyMsg); // (5)
   container.setAttribute('data-error-visible', true); // (6)
 }
 
+// FONCTION (B)
 function errorPersoMessages(container, msgPerso) {
   container.setAttribute('data-error', msgPerso);
   container.setAttribute('data-error-visible', true);
 }
 
+// FONCTION (C)
 function removeMessages(container) {
   container.removeAttribute('data-error');
   container.removeAttribute('data-error-visible');

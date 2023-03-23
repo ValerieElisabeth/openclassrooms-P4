@@ -46,16 +46,36 @@ pour cibler l'attribut ==> attr(data-error); créé dans le CSS, pour afficher c
 ===> la lighe ci-dessous à été supprimée du fichier modal.js
 // const formData = document.querySelector('.formData');
 
--------------------------------------------------------------------
--------------------------------------------------------------------
-
-ISSUES
 
 -------------------------------------------------------------------
 -------------------------------------------------------------------
+
+8/ Au niveau des Inputs Radio, j'ai déplacé le label à l'intérieur de la classe formData, car au moment où j'ai voulu cibler les classes formData, pour faire disparaitre tous les inputs du formulaire, seul le label de cet Input, ne disparaissait pas. Parcequ'il était mal placé dans le HTML.
+
+
+<div class="formData">
+<p class="text-label">
+A quel tournoi souhaitez-vous participer cette année ?
+</p>
+<input
+class="checkbox-input"
+type="radio"
+id="location1"
+name="location"
+value="New York"
+/>
+
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
+                            ISSUES
+
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
 IMPLÉMENTER LES ENTRÉES DU FORMULAIRE#2 
 - - - - - - - - - - - - - - - - - - - -
-(1) Lier les labels aux entrées dans le HTML en utilisant les attributs "for" et "id" dans le code existant. Corriger le code HTML quand nécessaire. =====> OK
+(1) Lier les labels aux entrées dans le HTML en utilisant les attributs "for" et "id" dans le code existant. Corriger le code HTML quand nécessaire. ///////////////// => OK
 
 Lier les <label> à leur <input> spécifique en utilisant les attributs "for" sur les labels et "id" sur les inputs. 
 
@@ -63,29 +83,41 @@ Cela permet de cliquer sur le label (ou étiquette, intitulé de l'input) pour d
 
 -------------------------------------------------------------------
 -------------------------------------------------------------------
+
 (2) Utiliser du JavaScript pur (pas de jQuery) pour terminer le formulaire :
 
     Le formulaire doit être valide quand l'utilisateur clique sur "Submit"
     Les données doivent être saisies correctement :
-    (1) Le champ Prénom a un minimum de 2 caractères / n'est pas vide. =====> OK
-    (2) Le champ du nom de famille a un minimum de 2 caractères / n'est pas vide. =====> OK
-    (3) L'adresse électronique est valide. =====> OK
-    (4) Pour le nombre de concours, une valeur numérique est saisie. =====> OK
-    (5) Un bouton radio est sélectionné. =====> OK
+    (1) Le champ Prénom a un minimum de 2 caractères / n'est pas vide. ///////////////// => OK
+    (2) Le champ du nom de famille a un minimum de 2 caractères / n'est pas vide. ///////////////// => OK
+    (3) L'adresse électronique est valide. ///////////////// => OK
+    (4) Pour le nombre de concours, une valeur numérique est saisie. ///////////////// => OK
+    (5) Un bouton radio est sélectionné. ///////////////// => OK
     (6) La case des conditions générales est cochée, l'autre case est facultative / peut être laissée décochée.
     Conserver les données du formulaire (ne pas effacer le formulaire) lorsqu'il ne passe pas la validation.
+
 -------------------------------------------------------------------
 -------------------------------------------------------------------
+
 AJOUTER VALIDATION OU MESSAGES D'ERREUR #3
 - - - - - - - - - - - - - - - - - - - - - - 
-Des messages d'erreur spécifiques doivent apparaître sous l'entrée qui n'est pas correcte.
+(3) Des messages d'erreur spécifiques doivent apparaître sous l'entrée qui n'est pas correcte.
 Les messages d'erreur doivent s'afficher sous le champ de saisie associé.
 
     Exemples :
-    "Veuillez entrer 2 caractères ou plus pour le champ du nom."
-    "Vous devez choisir une option."
-    "Vous devez vérifier que vous acceptez les termes et conditions."
-    "Vous devez entrer votre date de naissance."
+    "Veuillez entrer 2 caractères ou plus pour le champ du nom." ///////////////// => OK
+    "Vous devez choisir une option."  ///////////////// => OK
+    "Vous devez vérifier que vous acceptez les termes et conditions."  ///////////////// => OK
+    "Vous devez entrer votre date de naissance."  ///////////////// => OK
+
 -------------------------------------------------------------------
 -------------------------------------------------------------------
-Après une validation réussie, inclure un message de confirmation de la soumission réussie pour l'utilisateur (ex. "Merci ! Votre réservation a été reçue.")
+
+(4) Après une validation réussie, inclure un message de confirmation de la soumission réussie pour l'utilisateur (ex. "Merci ! Votre réservation a été reçue.")  ///////////////// => OK
+
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
+
+
+

@@ -43,7 +43,6 @@ DOM Elements
 
 const modalbg = document.querySelector('.bground'); // (1)
 const modalBtn = document.querySelectorAll('.modal-btn'); // (2)
-// const formData = document.querySelectorAll('.formData'); // (3)
 
 // Lance l'évènement de la modale au click de l'utilisateur
 modalBtn.forEach((ciblerBtn) => {
@@ -52,6 +51,7 @@ modalBtn.forEach((ciblerBtn) => {
 
 // Ouverture : du formulaire de la modale
 function launchModal() {
+  // form.reset();
   modalbg.style.display = 'block';
 }
 
@@ -59,7 +59,6 @@ function launchModal() {
 function closeModal() {
   modalbg.style.display = 'none';
 }
-
 const closedWindow = document.querySelector('.close');
 closedWindow.addEventListener('click', closeModal);
 
@@ -119,6 +118,48 @@ function testQuantity(number) {
   return quantityPattern.test(number);
 }
 // testQuantity('valérie');
+
+//
+// ---- TEST : CHECKED INPUT type : RADIO COCHÉ ------------------------------------------------------
+
+function testInputRadioIsChecked() {
+  const allInputsRadio = document.querySelectorAll('.form input[type="radio"]');
+
+  /* Ici la boucle forEach permet de vériifer si 1 bouton radio est coché.
+  Si c'est le cas, la condition renvoie : TRUE 
+  (n) return; ne renvoie pas de valeur mais arrête la fonction forEach, dès que celle-ci à trouvé un input coché.*/
+
+  let radioIsChecked = false;
+
+  allInputsRadio.forEach((ciblerInput) => {
+    if (ciblerInput.checked) {
+      radioIsChecked = true;
+      return; // (n)
+    }
+  });
+  // console.log(radioIsChecked);
+  return radioIsChecked;
+}
+
+// ---- TEST : CHECKED INPUT type : CHECKBOX COCHÉ ------------------------------------------------------
+
+function testInputCheckboxIsChecked() {
+  const allInputsCheckbox = document.querySelectorAll(
+    '.form input[type="checkbox"]'
+  );
+  /* Une boucle forEach permet de vériifer si 1 bouton checkbox est coché.
+  Si c'est le cas, la condition renvoie : TRUE */
+
+  let checkboxIsChecked = false;
+
+  allInputsCheckbox.forEach((input) => {
+    if (input.checked) {
+      checkboxIsChecked = true;
+      return;
+    }
+  });
+  return checkboxIsChecked;
+}
 
 /*
 ------------------------------------------------------------------------------------------------
@@ -286,32 +327,11 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
   // TEST DES INPUTS RADIOS ------------------------------------------------------------//
   // -----------------------------------------------------------------------------------//
 
-  // Par défaut, mon bouton à cocher ne l'est pas. Il renvoie : false.
-  let radioIsChecked = false;
-
   // (r) Cible le nom de l'ID de chaque ntb radio à chaque tour de boucle.
   const allInputsRadio = document.querySelectorAll('.form input[type="radio"]');
   allInputsRadio.forEach((ciblerInputRadio) => {
     const inputRadioName = document.querySelector(`#${ciblerInputRadio.id}`); //(r)
     const radioContainer = inputRadioName.parentNode;
-
-    /* ---------------------------------------------------------------------------------//
-    FONCTION TEST : qui vérifie qu'un bouton radio est coché, grâce à la boucle forEach.
-    Si c'est le cas, la condition renvoie : TRUE.
-    (n) return; ne renvoie pas de valeur mais arrête la fonction forEach, (comme un breack),
-    dès que celle-ci touve l'input radio coché et ne parcours pas les autres boutons.
-    */
-
-    function testInputRadioIsChecked() {
-      if (ciblerInputRadio.checked) {
-        radioIsChecked = true;
-        return; // (n)
-      }
-      // console.log(radioIsChecked);
-      return radioIsChecked;
-    }
-
-    // ----------------------------------------------------------------------------------//
 
     switch (ciblerInputRadio.id) {
       // ---------------------------------------------------------------------------------//
@@ -344,44 +364,23 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
   // TEST DES INPUTS type : CHECKBOX --------------------------------------------------------//
   // ----------------------------------------------------------------------------------------//
 
-  // Par défaut, mon input de type checkbox est coché. Il renvoie : true.
-  let checkboxIsChecked = true;
-
   const allInputsCheckbox = document.querySelectorAll(
     '.form input[type="checkbox"]'
   );
-
   allInputsCheckbox.forEach((ciblerInputCheckbox) => {
     const inputCheckboxName = document.querySelector(
       `#${ciblerInputCheckbox.id}`
     );
     const checkboxConatiner = inputCheckboxName.parentNode;
 
-    /* ---------------------------------------------------------------------------------//
-    FONCTION TEST : qui vérifie qu'un bouton checkbox n'est pas coché, grâce à la boucle forEach.
-    Si c'est le cas, la condition renvoie : FALSE.
-    (n) return; ne renvoie pas de valeur mais arrête la fonction forEach, (comme un breack),
-    dès que celle-ci touve l'input checkbox NON coché et ne parcours pas les autres boutons.
-    */
-
-    function testInputCheckboxIsChecked() {
-      if (ciblerInputCheckbox.checked) {
-        checkboxIsChecked = false;
-        return; // (n)
-      }
-      console.log(checkboxIsChecked);
-      return checkboxIsChecked;
-    }
-
-    // ----------------------------------------------------------------------------------//
+    // -------------------------------------------------------------------------------------//
+    // TEST DES CHAMPS "CHECKBOX" ----------------------------------------------------------//
+    // -------------------------------------------------------------------------------------//
 
     switch (ciblerInputCheckbox.id) {
-      // -------------------------------------------------------------------------------------//
-      // TEST DES CHAMPS "CHECKBOX" ----------------------------------------------------------//
-      // -------------------------------------------------------------------------------------//
       case 'checkbox1':
         //
-        if (testInputCheckboxIsChecked(ciblerInputCheckbox.checked)) {
+        if (!testInputCheckboxIsChecked(ciblerInputCheckbox.value)) {
           allInputsValid = false;
           errorEmptyMessages(checkboxConatiner, errorCheckboxMessage);
           //
@@ -392,9 +391,9 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
     }
   });
 
-  // if (allInputsValid) {
-  //   validate();
-  // }
+  if (allInputsValid) {
+    validate();
+  }
 });
 /*
 ------------------------------------------------------------------------------------------------
@@ -407,13 +406,55 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------  
 */
+const formData = document.querySelectorAll('.formData'); // (3)
 
-// function validate() {
-//   closeModal();
-//   const containerFinalMsg = document.querySelector('.closeBg');
-//   const confirmationMsg = document.createElement('p');
-//   confirmationMsg.innerText = 'Merci ! Votre réservation à été reçue.';
-//   containerFinalMsg.appendChild(confirmationMsg);
-//   console.log(confirmationMsg);
-//   // return confirmationMsg;
-// }
+// Efface tous les éléments ayant la classe : "formData"
+function removeFormData() {
+  formData.forEach((cicblerClassesFormData) => {
+    cicblerClassesFormData.style.display = 'none';
+  });
+}
+
+// FONCTION FINALE DE VALIDATION
+
+function validate() {
+  // Efface les inputs ayant la classe formData.
+  removeFormData();
+
+  // Création du texte de validation dans son conteneur parent
+  const modalBody_Parent = document.querySelector('.modal-body');
+  const messageFinalEnfant = document.createElement('p');
+  messageFinalEnfant.innerText = 'Merci pour \n votre inscription';
+  modalBody_Parent.appendChild(messageFinalEnfant);
+
+  // Position et style du texte de confirmation
+  messageFinalEnfant.style.textAlign = 'center';
+  messageFinalEnfant.style.fontSize = '35px';
+  messageFinalEnfant.style.fontWeight = '100';
+  messageFinalEnfant.style.marginTop = '250px';
+  modalBody_Parent.style.width = 'auto';
+  modalBody_Parent.style.height = '700px';
+
+  // Change la position et la valeur du bouton submit qui devient : Fermer
+  const bground_Element = document.querySelector('.bground');
+  modalBody_Parent.style.position = 'relative';
+  const closeBtn = document.querySelector('.button');
+  closeBtn.style.position = 'absolute';
+  closeBtn.style.bottom = '0px';
+  closeBtn.style.left = '150px';
+  closeBtn.value = 'Fermer';
+
+  // Efface l'arrière plan, après la fermeture du bouton
+  closeBtn.addEventListener('click', function () {
+    bground_Element.remove();
+    // Supression du message de confirmation
+    modalBody_Parent.removeChild(messageFinalEnfant);
+  });
+
+  // Lance l'évènement de la modale au click de l'utilisateur
+  // launchModal();
+  // form.style.display = 'bloc';
+}
+
+// closeModal();
+

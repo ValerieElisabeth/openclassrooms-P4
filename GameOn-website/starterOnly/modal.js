@@ -51,7 +51,6 @@ modalBtn.forEach((ciblerBtn) => {
 
 // Ouverture : du formulaire de la modale
 function launchModal() {
-  // form.reset();
   modalbg.style.display = 'block';
 }
 
@@ -59,8 +58,13 @@ function launchModal() {
 function closeModal() {
   modalbg.style.display = 'none';
 }
-const closedWindow = document.querySelector('.close');
-closedWindow.addEventListener('click', closeModal);
+
+function btnClosedWindow() {
+  const closedWindow = document.querySelector('.close');
+  closedWindow.addEventListener('click', closeModal);
+}
+
+btnClosedWindow();
 
 /*
 ------------------------------------------------------------------------------------------------
@@ -267,6 +271,7 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
           errorEmptyMessages(inputContainer, errorEmptyMsg);
           //
         } else if (!testString(ciblerInput.value)) {
+          allInputsValid = false;
           errorPersoMessages(inputContainer, errorMinimumString);
           //
         } else {
@@ -406,55 +411,64 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------  
 */
-const formData = document.querySelectorAll('.formData'); // (3)
 
-// Efface tous les éléments ayant la classe : "formData"
+/*
+Cible et efface tous les éléments ayant la classe : "formData"
+Cette classe, cible tous les inputs du formulaires
+à l'exception de l'input : (bouton) de soumission. 
+*/
+
+const formData = document.querySelectorAll('.formData'); // (3)
 function removeFormData() {
   formData.forEach((cicblerClassesFormData) => {
-    cicblerClassesFormData.style.display = 'none';
+    // cicblerClassesFormData.style.display = 'none';
+    cicblerClassesFormData.remove();
   });
 }
 
 // FONCTION FINALE DE VALIDATION
 
 function validate() {
-  // Efface les inputs ayant la classe formData.
+  // (1) Efface tous les inputs ayant la classe "formData".
   removeFormData();
 
-  // Création du texte de validation dans son conteneur parent
+  // (2) Création du texte de validation qui est ensuite lié à son conteneur parent.
   const modalBody_Parent = document.querySelector('.modal-body');
-  const messageFinalEnfant = document.createElement('p');
-  messageFinalEnfant.innerText = 'Merci pour \n votre inscription';
-  modalBody_Parent.appendChild(messageFinalEnfant);
+  const messageFinal_Enfant = document.createElement('p');
+  messageFinal_Enfant.innerText = 'Merci pour \n votre inscription';
+  modalBody_Parent.appendChild(messageFinal_Enfant);
 
-  // Position et style du texte de confirmation
-  messageFinalEnfant.style.textAlign = 'center';
-  messageFinalEnfant.style.fontSize = '35px';
-  messageFinalEnfant.style.fontWeight = '100';
-  messageFinalEnfant.style.marginTop = '250px';
+  // (3) Position et style CSS du message final de confirmation.
+  messageFinal_Enfant.style.textAlign = 'center';
+  messageFinal_Enfant.style.fontSize = '35px';
+  messageFinal_Enfant.style.fontWeight = '100';
+  messageFinal_Enfant.style.marginTop = '250px';
   modalBody_Parent.style.width = 'auto';
   modalBody_Parent.style.height = '700px';
 
-  // Change la position et la valeur du bouton submit qui devient : Fermer
+  // (4) Changement de la position du bouton submit, et de sa valeur qui devient : "Fermer"
   const bground_Element = document.querySelector('.bground');
+  const closeX = document.querySelector('.close');
+  closeX.style.zIndex = 1;
   modalBody_Parent.style.position = 'relative';
   const closeBtn = document.querySelector('.button');
   closeBtn.style.position = 'absolute';
   closeBtn.style.bottom = '0px';
   closeBtn.style.left = '150px';
   closeBtn.value = 'Fermer';
+  btnClosedWindow();
 
-  // Efface l'arrière plan, après la fermeture du bouton
+  // (5a) Efface l'overlay d'arrière plan, après la fermeture du bouton de la modale.
+  // (5b) Supprime le message de confirmation.
   closeBtn.addEventListener('click', function () {
-    bground_Element.remove();
-    // Supression du message de confirmation
-    modalBody_Parent.removeChild(messageFinalEnfant);
+    bground_Element.remove(); // (5a)
+    modalBody_Parent.removeChild(messageFinal_Enfant); // (5b)
+
+    // (6) Recharge la page
+    location.reload();
+    //
   });
+} // fin function validate()
 
-  // Lance l'évènement de la modale au click de l'utilisateur
-  // launchModal();
-  // form.style.display = 'bloc';
-}
-
-// closeModal();
-
+// (6) Efface le contenu du formulaire
+form.reset();

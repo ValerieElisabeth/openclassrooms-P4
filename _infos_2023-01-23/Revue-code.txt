@@ -1,24 +1,34 @@
-1/ J'ai créer une classe form, pour cibler depuis mon fichier JS tous le formulaire.
+-------------------------------------------------------------------
+DÉFINITION D'UNE MODALE :
+-------------------------------------------------------------------
+
+Une modale est une fenêtre qui s'affiche au centre de l'écran et qui obscurcit le reste de la page Web, (par overlay) la rendant temporairement inaccessible. Elle est souvent utilisée pour afficher des informations importantes ou pour demander une action de l'utilisateur.
+
+Contrairement aux pop-ups, les modales sont moins intrusives et elles obligent l'utilisateur à interagir avec la fenêtre avant de revenir à la page Web. Les modales peuvent également fournir une expérience utilisateur plus fluide, car elles peuvent être utilisées pour afficher des formulaires de saisie d'informations, des menus de navigation ou pour confirmer des actions.
 
 -------------------------------------------------------------------
 -------------------------------------------------------------------
-
-2/ J'ai placé sur cette classe un écouteur d'évènement sur le bouton "submit" pour gérér la validité de tous les boutons du formulaire.
-
+MES ACTIONS DANS LE HTML :
 -------------------------------------------------------------------
 -------------------------------------------------------------------
-
+1/ J'ai créer une classe form, pour cibler tous le formulaire, depuis mon fichier JS. 
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+2/ J'ai placé sur cette classe un écouteur d'évènement sur le bouton de type "submit" pour gérér la validité final de tous les boutons du formulaire.
+-------------------------------------------------------------------
+-------------------------------------------------------------------
 3/ Dans le fichiers JavaScript, la constante "modalBtn" ciblait 2 boutons : "je m'inscris"
 const modalBtn = document.querySelectorAll('.modal-btn');
-
 Un pour la version Desktop, l'autre pour la version mobile.
-
+IL NE FAUT PAS EN SUPPRIMER UN.
 -------------------------------------------------------------------
 -------------------------------------------------------------------
 
-7/ Une constante : formData ciblait les 7 classes communes à chaque input du formulaire.
+4/ Une constante : formData ciblait les 7 classes communes à chaque input du formulaire.
 ces classes ont un lien avec les messages d'érreurs pré-stylés visibles dans le fichier CSS.
 
+
+----------code CSS des messages d'erreurs-------------//
 .formData[data-error]::after {
   content: attr(data-error);
   font-size: 12px;
@@ -39,18 +49,18 @@ ces classes ont un lien avec les messages d'érreurs pré-stylés visibles dans 
 .formData[data-error-visible='true'] .text-control {
   border: 2px solid #e54858;
 }
+------------------------------------------------------//
 
-Étant donnée que cibler ces messages, je suis passé par la méthode : setAttribute()
-pour cibler l'attribut ==> attr(data-error); créé dans le CSS, pour afficher ces messages après leur container respectif, eux-mêmes ciblés, gâces aux ID de chaque éléments, j'ai donc supprimer la ligne de code qui ciblait toutes les classes : .formData, car je n'en ai pas eu besoin.
+Pour cibler ces messages, je suis passé par la méthode : setAttribute(). Puis, pour cibler l'attribut ==> attr(data-error); celui qui est utilisé par le CSS, pour afficher ces messages, juste après leur container respectif, eux-mêmes ciblés, gâces aux ID de chaque éléments.
 
-===> la lighe ci-dessous à été supprimée du fichier modal.js
+Ce ciblage m'a été utile pour EFFACER tous les inputs du formulaire à l'exception du bouton de soumission, pour laisser apparaitre un message de confirmation de l'envoi du formulaire.
+
 // const formData = document.querySelector('.formData');
 
-
 -------------------------------------------------------------------
 -------------------------------------------------------------------
 
-8/ Au niveau des Inputs Radio, j'ai déplacé le label à l'intérieur de la classe formData, car au moment où j'ai voulu cibler les classes formData, pour faire disparaitre tous les inputs du formulaire, seul le label de cet Input, ne disparaissait pas. Parcequ'il était mal placé dans le HTML.
+5/ Au niveau des Inputs Radio, j'ai déplacé un label à l'intérieur de sa classe formData, car au moment où j'ai voulu cibler les classes formData, pour faire disparaitre tous les inputs du formulaire, seul le label de cet Input, ne disparaissait pas. Parcequ'il était mal placé dans le HTML.
 
 
 <div class="formData">
@@ -64,6 +74,11 @@ id="location1"
 name="location"
 value="New York"
 />
+
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
+6/ J'ai endu certains type de boutons inactifs en leur donnant le type texte, pour prioriser le fichier Javascript.
 
 -------------------------------------------------------------------
 -------------------------------------------------------------------

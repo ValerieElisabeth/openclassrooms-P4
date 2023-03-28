@@ -78,7 +78,10 @@ value="New York"
 -------------------------------------------------------------------
 -------------------------------------------------------------------
 
-6/ J'ai endu certains type de boutons inactifs en leur donnant le type texte, pour prioriser le fichier Javascript.
+6/ J'ai rendu certains type de boutons inactifs avec la propriété : "novalidate",
+pour prioriser les validation et les messages d'erreurs du fichier Javascript,
+à la place de ceux des navigateurs pour que l'expérience utilisateur soit la même,
+sur tous type de navigateurs.
 
 -------------------------------------------------------------------
 -------------------------------------------------------------------

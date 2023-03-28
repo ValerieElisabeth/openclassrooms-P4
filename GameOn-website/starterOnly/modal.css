@@ -200,6 +200,9 @@ main {
 .modal-body {
   padding: 15px 8%;
   margin: 15px auto;
+  /* Fenêtre Merci pour votre inscription */
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 label {
@@ -316,7 +319,7 @@ input[data-error]::after {
   left: 21%;
   top: 19%;
 }
-.close {
+.closeX {
   position: absolute;
   right: 15px;
   top: 15px;
@@ -326,8 +329,8 @@ input[data-error]::after {
   cursor: pointer;
   transform: scale(0.7);
 }
-.close:before,
-.close:after {
+.closeX:before,
+.closeX:after {
   position: absolute;
   left: 15px;
   content: ' ';
@@ -335,10 +338,10 @@ input[data-error]::after {
   width: 3px;
   background-color: #fff;
 }
-.close:before {
+.closeX:before {
   transform: rotate(45deg);
 }
-.close:after {
+.closeX:after {
   transform: rotate(-45deg);
 }
 
@@ -475,6 +478,64 @@ input[data-error]::after {
   margin: 0;
   margin-top: 59px;
 }
+
+/*
+----------------------------------------------------------------------------------------------------------------------------
+Style du Message Final et du bouton FERMER 
+-----------------------------------------------------------------------------------------------------------------------------
+*/
+
+/* Style du message final */
+.final-msg {
+  height: auto;
+  line-height: 3rem;
+  font-family: Helvetica;
+  letter-spacing: 0.05rem;
+  font-weight: 100;
+  font-size: 2.2rem;
+  text-align: center;
+  color: #fff;
+  margin-top: 250px;
+}
+
+/* --------------------------------------------------- */
+
+/*
+Rendu invisible du closed-btn "fermer"
+*/
+
+.closed-btn--visible {
+  display: block;
+  margin-top: 250px;
+}
+
+/* --------------------------------------------------- */
+
+/*
+Rendre visible la modale => Ouverture de la modale
+Rendre visible  le formulaire avec l'ajout d'une classe "d-block"
+*/
+
+.bground.modal--open,
+.d-block {
+  display: block;
+}
+
+/*
+Rendu invisible de la fenêtre de la modale  => Fermeture dela modale
+Rendu invisible du closed-btn "fermer"
+Rendu invisible du formulaire 
+*/
+
+.bground.modal--closed,
+.closed-btn,
+.d-none {
+  display: none;
+}
+
+/* -------------------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------------------------------------------------------- */
+
 .hero-img {
   grid-column: span 8;
 }

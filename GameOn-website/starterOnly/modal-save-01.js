@@ -37,31 +37,43 @@ function editNav() {
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
 DOM Elements
-(1) On cible la classe qui; à l'ouverture du formulaire, donne à son arrière plan une couleur qui masque tous le site.
-(2) On cible le bouton du ayant la classe "modal-btn" pour gérer le module du formulaire. Ouverture/Fermeture.
+(1) On cible la classe: "bground" qui gère l'affichage de l'OVERLAY => modal => formulaire.
+(2) On cible ensuite les 2 boutons :"Je M'inscris" ayant la classe "modal-btn" un pour la (version MOBILE)
+ et un pour la (version DESCKTOP). On place sur eux, un écouteur d'evènement, qui au click, va ajouter
+ une classe :  "modal--open", à côté de la classe : bground" qui gère l'OVERLAY. Grâce à cette classe
+ ajouté (et qui est stylée en CSS avec un display block) pour OUVRIR LA MODALE,
+ via une boucle forEach.
 */
 
 const modalbg = document.querySelector('.bground'); // (1)
 const modalBtn = document.querySelectorAll('.modal-btn'); // (2)
-// const formData = document.querySelectorAll('.formData'); // (3)
 
-// Lance l'évènement de la modale au click de l'utilisateur
+// Lance l'ouverture de la modale avec l'écouteur d'évènement au click de l'utilisateur,
+// en ciblant les classes "modal-btn".
 modalBtn.forEach((ciblerBtn) => {
   ciblerBtn.addEventListener('click', launchModal);
 });
 
-// Ouverture : du formulaire de la modale
+// OUVERTURE DE LA MODALE.
 function launchModal() {
-  modalbg.style.display = 'block';
+  modalbg.classList.add('modal--open');
+  modalbg.classList.remove('modal--closed');
 }
 
-// Fermeture : du formulaire de la modale
+// Lance la fermeture de la modale avec l'écouteur d'évènement au click de l'utilisateur,
+// en ciblant la classe ".close"
+function btnClosedWindow() {
+  const closeXwindow = document.querySelector('.closeX');
+  closeXwindow.addEventListener('click', closeModal);
+}
+
+// FERMETURE DE LA MODALE.
 function closeModal() {
-  modalbg.style.display = 'none';
+  modalbg.classList.add('modal--closed');
+  modalbg.classList.remove('modal--open');
 }
 
-const closedWindow = document.querySelector('.close');
-closedWindow.addEventListener('click', closeModal);
+btnClosedWindow();
 
 /*
 ------------------------------------------------------------------------------------------------
@@ -112,12 +124,18 @@ function testDate(number) {
 
 //
 // ---- TEST : QUANTITÉ DE TOURNOIS DÉJÀ PARTICIPÉ ? ----------------------------------------------
+/*
+(1) (parseInt) : Permet de convertir l'argument "number" qui est une chaîne de caractères,
+en nombres. 10 est la valeur par défaut, mais ne représente pas une limite, seulement un type. Number.
+*/
 
 function testQuantity(number) {
-  const quantityPattern = /^\d+$/;
-  // console.log(quantityPattern.test(number.value));
-  return quantityPattern.test(number);
+  // (1)
+  const patternQuantity = /^\d+$/;
+  const changeStringOfNumber = parseInt(number, 10); // (parseInt)
+  return patternQuantity.test(changeStringOfNumber); // ()
 }
+
 // testQuantity('valérie');
 
 //
@@ -211,6 +229,7 @@ const errorDateMsg = 'Vous devez saisir un nombre';
 const errorEmail = 'Vous devez saisir une adresse e-mail valide';
 const errorRadioMessage = 'Vous devez choisir une option';
 const errorCheckboxMessage = "Vous devez accepter les conditions d'utilisation";
+const messageFinal_confirmation = 'Merci pour \n votre inscription';
 
 let msgPerso;
 let inputName;
@@ -268,6 +287,7 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
           errorEmptyMessages(inputContainer, errorEmptyMsg);
           //
         } else if (!testString(ciblerInput.value)) {
+          allInputsValid = false;
           errorPersoMessages(inputContainer, errorMinimumString);
           //
         } else {
@@ -285,6 +305,7 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
           errorEmptyMessages(inputContainer, errorEmptyMsg);
           //
         } else if (!testEmail(ciblerInput.value)) {
+          allInputsValid = false;
           errorPersoMessages(inputContainer, errorEmail);
           //
         } else {
@@ -315,6 +336,7 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
           errorEmptyMessages(inputContainer, errorEmptyMsg);
           //
         } else if (!testQuantity(ciblerInput.value)) {
+          allInputsValid = false;
           errorPersoMessages(inputContainer, errorDateMsg);
           //
         } else {
@@ -392,9 +414,9 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
     }
   });
 
-  // if (allInputsValid) {
-  //   validate();
-  // }
+  if (allInputsValid) {
+    validate();
+  }
 });
 /*
 ------------------------------------------------------------------------------------------------
@@ -408,12 +430,84 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
 ------------------------------------------------------------------------------------------------  
 */
 
-// function validate() {
-//   closeModal();
-//   const containerFinalMsg = document.querySelector('.closeBg');
-//   const confirmationMsg = document.createElement('p');
-//   confirmationMsg.innerText = 'Merci ! Votre réservation à été reçue.';
-//   containerFinalMsg.appendChild(confirmationMsg);
-//   console.log(confirmationMsg);
-//   // return confirmationMsg;
-// }
+const closedXwindow = document.querySelector('.closeX');
+
+function validate() {
+  //
+  /* // A : EFFACER LE FORMULAIRE :
+  ---------------------------------------------------------------------------------------------
+  (1) cible la classe : "form" pour initialiser ou remettre à zéro les inputs du formulaire, avec la fonction : "reset()"
+  (2) Cache le formulaire en lui ajoutant une classe CSS display none.
+  */
+
+  form.reset(); //(1)
+  form.classList.add('d-none'); // (2)
+
+  //
+  /* // B : CRÉATION DU MESSAGE DE CONFIRMATION :
+  ---------------------------------------------------------------------------------------------
+  (2a) Cible le container Parent du formulaire : "modal-body"
+  (2b) Création d'un paragraphe dans le DOM.
+  (2c) Insertion du message de confirmation dans le paragraphe, via une constante pré-définie.
+  (2d) Ajout d'une classe appellée : "final-msg" au paragraphe précédement crée.
+  La classe : "final-msg" est stylée directement dans le fihier CSS.
+  (2e) Rattachement de l'enfant "<p>" à son parent ".modal-body" afin qu'il apparaisse sur la page web.
+  */
+  const modalBody_Parent = document.querySelector('.modal-body'); // (2a)
+  const messageFinal_Enfant = document.createElement('p'); // (2b)
+  messageFinal_Enfant.innerText = messageFinal_confirmation; // (2c)
+  messageFinal_Enfant.classList.add('final-msg'); // (2d)
+  modalBody_Parent.appendChild(messageFinal_Enfant); // (2e)
+
+  //
+  /* C : CIBLER LE BOUTON : "FERMER" et lui ajouter une classe qui le rend visible.
+  ---------------------------------------------------------------------------------------------
+  (3a) Cible la classe : "closed-btn" lDU BOUTON "FERMER"
+  (3b) Puis, remplace sa classe "closed-btn" par la classe "closed-btn--visible", de façon dynamique,
+  directement dans le fichier HTML, avec la fonction : "classList.replace".
+  La classe ".bouton--visible" est stylée directement dans le fichier CSS, et prend la valeur display : block.
+  Rendant ainsi le bouton : "FERMER" qui par défaut est : display : none.
+  */
+
+  const ciblerCloseBtn = document.querySelector('.closed-btn'); // (3a)
+  ciblerCloseBtn.classList.replace('closed-btn', 'closed-btn--visible'); // (3b)
+
+  //
+  /* D : CIBLER LE BOUTON : "FERMER", le supprimer ainsi que le message final.
+  ------------------------------------------------------------------------------------------------
+  (Da) On cible la classe : ".closed-btn--visible" remplaçante de la classe : ".closed-btn",
+  et on l'utilise comme écouteur d'évènement du bouton "fermer", pour qu'au click de l'utilisateur, elle...
+  ---------
+  (D1) Vérifie si la classe : "final-msg" précédement ajouté au paragraphe du message finale,
+  existe en la ciblant et :
+  (SI) elle existe (ALORS) on la supprime avec la fonction : remove().
+  ---------
+  (D2) Cible l'actuelle classe du bouton : ".closed-btn--visible" pour la remplacer par sa classe d'origine.
+  ".closed-btn" qui est en display none : le rendra de nouveau invisible, depuis le formulaire.
+   ---------
+  (D3) Cible la classe : "form" du formulaire pour supprimer la classe : "d-none"
+  afin qu'il ré-apparaisse à la prochaine utilisation en vivible.
+  ---------
+  (D4) Appel de la fonction qui ferme la modale.
+  */
+
+  const btnClosedVisibilityClass = document.querySelector(
+    '.closed-btn--visible'
+  ); // (Da)
+
+  btnClosedVisibilityClass.addEventListener('click', function () {
+    // (Da) Écoute les click du bouton fermer.
+
+    const finaLMsgClass = document.querySelector('.final-msg'); // (D1)
+    finaLMsgClass.remove();
+
+    btnClosedVisibilityClass.classList.replace(
+      'closed-btn--visible',
+      'closed-btn'
+    ); // (D2)
+
+    form.classList.remove('d-none'); // (D3)
+    closeModal(); // (D4)
+    //
+  });
+} // fin function validate()

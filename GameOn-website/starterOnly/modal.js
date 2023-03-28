@@ -60,37 +60,63 @@ function launchModal() {
   modalbg.classList.remove('modal--closed');
 }
 
-// Lance la fermeture de la modale avec l'écouteur d'évènement au click de l'utilisateur,
-// en ciblant la classe ".close"
+//
+/* D : FERMETURE DE LA MODALE EN CIBLANT (au choix) LE BOUTON : "FERMER", ou l'icone "X"
+  afin de supprimer le message final et le bouton "Fermer" ou de simplement fermer le formulaire.
+  ------------------------------------------------------------------------------------------------
 
-function btnClosedWindow1() {
-  const closeXwindow1 = document.querySelector('.closeX');
-  closeXwindow1.addEventListener('click', closeModal);
-}
+  (Da) Via l'id : "#button" du bouton "FERMER" on cible la classe :
+  ".closed-btn--visible" remplaçante de la classe : ".closed-btn",
+  et on l'utilise comme écouteur d'évènement du bouton "fermer", pour qu'au click de l'utilisateur,
+  elle effectue les opération suivantes ...
 
-function btnClosedWindow2() {
-  const closedXwindow2 = document.querySelector('.closeX');
-  closedXwindow2.addEventListener('click', function () {
-    const closedBtnVisible = document.querySelector('#button');
-    closedBtnVisible.classList.replace('closed-btn--visible', 'closed-btn');
+  (Db) Cible la classe : "closeX" et effectue les opération suivantes ...
+  ---------
+  (D1) Vérifie si la classe : "final-msg" précédement ajouté au paragraphe du message finale,
+  existe en la ciblant et :
+  (SI) elle existe (ALORS) on la supprime avec la fonction : remove().
+  ---------
+  (D2) Cible l'actuelle classe du bouton : ".closed-btn--visible" via son ID, pour la remplacer par sa classe d'origine.
+  ".closed-btn" qui est en display none : le rendra de nouveau invisible, depuis le formulaire.
+   ---------
+  (D3) Cible la classe : "form" du formulaire pour supprimer la classe : "d-none"
+  afin qu'il ré-apparaisse à la prochaine utilisation en vivible.
+  ---------
+  (D4) Appel de la fonction qui ferme la modale.
+  */
+
+function closeXwindowFinalMessage(cible) {
+  cible.addEventListener('click', function () {
+    // (Da) Écoute les click du bouton fermer
+    // (Db) Écoute les click du bouton CloseX
 
     const finaLMsgClass = document.querySelector('.final-msg'); // (D1)
-    finaLMsgClass.remove();
+    if (finaLMsgClass) {
+      finaLMsgClass.remove();
+    }
+
+    const btnClosedVisibilityClass = document.querySelector('#button');
+    btnClosedVisibilityClass.classList.replace(
+      'closed-btn--visible',
+      'closed-btn'
+    ); // (D2)
 
     form.classList.remove('d-none'); // (D3)
-
-    closeModal();
+    closeModal(); // (D4)
+    //
   });
 }
 
-// FERMETURE DE LA MODALE.
+// FERMETURE DE LA MODALE par l'icone "X"
+// (Db) Écoute les click du bouton CloseX du formulaire et ferme sa fenêtre.
+const closedXwindowIcon = document.querySelector('.closeX');
+closeXwindowFinalMessage(closedXwindowIcon);
+
+// FONCTION DE FERMETURE DE LA MODALE.
 function closeModal() {
   modalbg.classList.add('modal--closed');
   modalbg.classList.remove('modal--open');
 }
-
-btnClosedWindow1();
-btnClosedWindow2();
 
 /*
 ------------------------------------------------------------------------------------------------
@@ -455,7 +481,7 @@ function validate() {
   (2) Cache le formulaire en lui ajoutant une classe CSS display none.
   */
 
-  // form.reset(); //(1) à remettre après les essais
+  form.reset(); //(1) à remettre après les essais
   form.classList.add('d-none'); // (2)
 
   //
@@ -490,39 +516,11 @@ function validate() {
   //
   /* D : CIBLER LE BOUTON : "FERMER", le supprimer ainsi que le message final.
   ------------------------------------------------------------------------------------------------
-  (Da) On cible la classe : ".closed-btn--visible" remplaçante de la classe : ".closed-btn",
-  et on l'utilise comme écouteur d'évènement du bouton "fermer", pour qu'au click de l'utilisateur, elle...
-  ---------
-  (D1) Vérifie si la classe : "final-msg" précédement ajouté au paragraphe du message finale,
-  existe en la ciblant et :
-  (SI) elle existe (ALORS) on la supprime avec la fonction : remove().
-  ---------
-  (D2) Cible l'actuelle classe du bouton : ".closed-btn--visible" pour la remplacer par sa classe d'origine.
-  ".closed-btn" qui est en display none : le rendra de nouveau invisible, depuis le formulaire.
-   ---------
-  (D3) Cible la classe : "form" du formulaire pour supprimer la classe : "d-none"
-  afin qu'il ré-apparaisse à la prochaine utilisation en vivible.
-  ---------
-  (D4) Appel de la fonction qui ferme la modale.
+  (Da) On cible l'id : "#button" qui remplacera de la classe : ".closed-btn".
   */
 
-  const btnClosedVisibilityClass = document.querySelector(
-    '.closed-btn--visible'
-  ); // (Da)
-
-  btnClosedVisibilityClass.addEventListener('click', function () {
-    // (Da) Écoute les click du bouton fermer.
-
-    const finaLMsgClass = document.querySelector('.final-msg'); // (D1)
-    finaLMsgClass.remove();
-
-    btnClosedVisibilityClass.classList.replace(
-      'closed-btn--visible',
-      'closed-btn'
-    ); // (D2)
-
-    form.classList.remove('d-none'); // (D3)
-    closeModal(); // (D4)
-    //
-  });
+  const essai_cible = document.querySelector('#button'); // (Da)
+  closeXwindowFinalMessage(essai_cible);
+  //
+  //
 } // fin function validate()

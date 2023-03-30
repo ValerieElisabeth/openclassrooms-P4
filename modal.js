@@ -129,6 +129,7 @@ function closeModal() {
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
+La fonction : test() est spécifique aux expressions regulières
 */
 
 //
@@ -167,19 +168,13 @@ function testDate(number) {
 
 //
 // ---- TEST : QUANTITÉ DE TOURNOIS DÉJÀ PARTICIPÉ ? ----------------------------------------------
-/*
-(1) (parseInt) : Permet de convertir l'argument "number" qui est une chaîne de caractères,
-en nombres. 10 est la valeur par défaut, mais ne représente pas une limite, seulement un type. Number.
-*/
 
-function testQuantity(number) {
+function testQuantity(string) {
   // (1)
-  const patternQuantity = /^\d+$/;
-  const changeStringOfNumber = parseInt(number, 10); // (parseInt)
-  return patternQuantity.test(changeStringOfNumber); // ()
+  const patternQuantity = /^(?:[0-9]|[1-4][0-9]|100)$/;
+  // console.log(testQuantity('valérie'));
+  return patternQuantity.test(string); // ()
 }
-
-// testQuantity('valérie');
 
 //
 // ---- TEST : CHECKED INPUT type : RADIO COCHÉ ------------------------------------------------------
@@ -268,7 +263,7 @@ INITIALISATION des messages d'erreurs personnalisés ---------------------------
 const errorEmptyMsg = 'Ce champ ne peut pas être vide'; // (3a)
 const errorMinimumString = 'Vous devez entrer 2 caractères ou plus'; // (3b)
 const errorbirthdateMsg = 'Vous devez saisir votre date de naissance';
-const errorDateMsg = 'Vous devez saisir un nombre';
+const errorDateMsg = 'Vous devez saisir un nombre positif';
 const errorEmail = 'Vous devez saisir une adresse e-mail valide';
 const errorRadioMessage = 'Vous devez choisir une option';
 const errorCheckboxMessage = "Vous devez accepter les conditions d'utilisation";
@@ -374,14 +369,12 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
       // ------------------------------------------------------------------------------//
 
       case 'quantity':
-        if (!ciblerInput.value) {
-          allInputsValid = false;
-          errorEmptyMessages(inputContainer, errorEmptyMsg);
-          //
-        } else if (!testQuantity(ciblerInput.value)) {
+        if (!testQuantity(ciblerInput.value)) {
           allInputsValid = false;
           errorPersoMessages(inputContainer, errorDateMsg);
-          //
+        } else if (!ciblerInput.value) {
+          allInputsValid = false;
+          errorEmptyMessages(inputContainer, errorEmptyMsg);
         } else {
           removeMessages(inputContainer);
         }
@@ -393,7 +386,7 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
   // TEST DES INPUTS RADIOS ------------------------------------------------------------//
   // -----------------------------------------------------------------------------------//
 
-  // (r) Cible le nom de l'ID de chaque ntb radio à chaque tour de boucle.
+  // (r) Cible le nom de l'ID de chaque btn radio à chaque tour de boucle.
   const allInputsRadio = document.querySelectorAll('.form input[type="radio"]');
   allInputsRadio.forEach((ciblerInputRadio) => {
     const inputRadioName = document.querySelector(`#${ciblerInputRadio.id}`); //(r)
@@ -440,7 +433,6 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
     const checkboxConatiner = inputCheckboxName.parentNode;
 
     // -------------------------------------------------------------------------------------//
-    // TEST DES CHAMPS "CHECKBOX" ----------------------------------------------------------//
     // -------------------------------------------------------------------------------------//
 
     switch (ciblerInputCheckbox.id) {
@@ -481,7 +473,7 @@ function validate() {
   (2) Cache le formulaire en lui ajoutant une classe CSS display none.
   */
 
-  form.reset(); //(1) à remettre après les essais
+  // form.reset(); //(1) à remettre après les essais
   form.classList.add('d-none'); // (2)
 
   //

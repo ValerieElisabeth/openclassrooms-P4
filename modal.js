@@ -473,7 +473,7 @@ function validate() {
   (2) Cache le formulaire en lui ajoutant une classe CSS display none.
   */
 
-  // form.reset(); //(1) à remettre après les essais
+  form.reset(); //(1) à remettre après les essais
   form.classList.add('d-none'); // (2)
 
   //

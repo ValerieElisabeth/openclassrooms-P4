@@ -8,22 +8,21 @@
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
-Jusqu'à 768px max la classe : "responsive" s'ajoute à la classe : "topnav"
+Fonction : edithNav() qui change l'apparence du menu principal de la page web au format mobile.
 */
 
 function editNav() {
-  let topNav = document.querySelector('#myTopnav');
-  topNav.addEventListener('click', function () {
-    //
+  const topNav = document.querySelector('#myTopnav');
+  const icon = document.querySelector('.icon');
+
+  icon.addEventListener('click', function () {
     if (topNav.className === 'topnav') {
       topNav.className += ' responsive';
-      //
     } else {
       topNav.className = 'topnav';
     }
   });
 }
-
 editNav();
 /*
 ------------------------------------------------------------------------------------------------
@@ -431,7 +430,7 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
     const inputCheckboxName = document.querySelector(
       `#${ciblerInputCheckbox.id}`
     );
-    const checkboxConatiner = inputCheckboxName.parentNode;
+    const checkboxContainer = inputCheckboxName.parentNode;
 
     // -------------------------------------------------------------------------------------//
     // -------------------------------------------------------------------------------------//
@@ -441,10 +440,10 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
         //
         if (!testInputCheckboxIsChecked(ciblerInputCheckbox)) {
           allInputsValid = false;
-          errorEmptyMessages(checkboxConatiner, errorCheckboxMessage);
+          errorEmptyMessages(checkboxContainer, errorCheckboxMessage);
           //
         } else {
-          removeMessages(checkboxConatiner);
+          removeMessages(checkboxContainer);
         }
         break;
     }
@@ -508,7 +507,7 @@ function validate() {
 
   //
   /* D : CIBLER LE BOUTON : "FERMER", le supprimer ainsi que le message final.
-  -------------------------94-----------------------------------------------------------------------
+  ------------------------------------------------------------------------------------------------
   (Da) On cible l'id : "#btn-closure" qui remplacera de la classe : ".closed-btn".
   */
 

@@ -8,23 +8,23 @@
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
-Grâce à la proriété JS : className, cette fonction peut accéder à la valeur de la classe
-de l'élément ayant l'ID : myTopnav.
-Ensuite :
-SI ==> la valeur de la classe clibée est === à : "topnav" 
-ALORS ==> sa valeur deviendra "topnav responsive"
-SINON ==> sa valeur restera la même. "topnav"
+Jusqu'à 768px max la classe : "responsive" s'ajoute à la classe : "topnav"
 */
 
 function editNav() {
-  var classValue = document.querySelector('#myTopnav');
-  if (classValue.className === 'topnav') {
-    classValue.className += ' responsive';
-  } else {
-    classValue.className = 'topnav';
-  }
+  let topNav = document.querySelector('#myTopnav');
+  topNav.addEventListener('click', function () {
+    //
+    if (topNav.className === 'topnav') {
+      topNav.className += ' responsive';
+      //
+    } else {
+      topNav.className = 'topnav';
+    }
+  });
 }
 
+editNav();
 /*
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
@@ -171,7 +171,7 @@ function testDate(number) {
 
 function testQuantity(string) {
   // (1)
-  const patternQuantity = /^(?:[0-9]|[1-4][0-9]|100)$/;
+  const patternQuantity = /^(?:[0-9]|[1-9][0-9]|100)$/;
   // console.log(testQuantity('valérie'));
   return patternQuantity.test(string); // ()
 }

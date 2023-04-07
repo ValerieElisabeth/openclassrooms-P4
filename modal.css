@@ -90,6 +90,7 @@ input[type='radio'] {
   }
 }
 
+
 @media screen and (max-width: 768px) {
   .topnav.responsive {
     position: relative;
@@ -231,8 +232,10 @@ input {
 dans le fichier JS et à qui une valeur lui sera attribué contenant mon message d'erreur */
 .formData[data-error]::after {
   content: attr(data-error);
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
   color: #e54858;
+  font-weight: 900;
   display: block;
   margin-top: 7px;
   margin-bottom: 7px;

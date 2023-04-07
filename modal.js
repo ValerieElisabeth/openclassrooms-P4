@@ -3,7 +3,7 @@
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
 
-                    FONCTION QUI GÈRE LA PARTIE RESPONSIVE
+                FONCTION QUI GÈRE LA PARTIE RESPONSIVE DU MENU PRINCIPAL
 
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
@@ -11,7 +11,7 @@
 Grâce à la proriété JS : className, cette fonction peut accéder à la valeur de la classe
 de l'élément ayant l'ID : myTopnav.
 Ensuite :
-SI ==> la valeur de la classe clibée est : "topnav" 
+SI ==> la valeur de la classe clibée est === à : "topnav" 
 ALORS ==> sa valeur deviendra "topnav responsive"
 SINON ==> sa valeur restera la même. "topnav"
 */
@@ -36,13 +36,13 @@ function editNav() {
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
-DOM Elements
+
 (1) On cible la classe: "bground" qui gère l'affichage de l'OVERLAY => modal => formulaire.
 (2) On cible ensuite les 2 boutons :"Je M'inscris" ayant la classe "modal-btn" un pour la (version MOBILE)
- et un pour la (version DESCKTOP). On place sur eux, un écouteur d'evènement, qui au click, va ajouter
- une classe :  "modal--open", à côté de la classe : bground" qui gère l'OVERLAY. Grâce à cette classe
- ajouté (et qui est stylée en CSS avec un display block) pour OUVRIR LA MODALE,
- via une boucle forEach.
+et un pour la (version DESCKTOP).
+(3) On place sur eux, un écouteur d'évènement, qui au click, va ajouter une classe :  "modal--open",
+à côté de la classe : "bground" qui gère l'OVERLAY. La modale S'OUVRIRA, via une boucle forEach, grâce à la classe :
+"modal--open" qui sera ajoutée. Cette classe sera pré-stylée en CSS avec un display block pour faire apparaitre le bloc de la modale.
 */
 
 const modalbg = document.querySelector('.bground'); // (1)
@@ -54,18 +54,24 @@ modalBtn.forEach((ciblerBtn) => {
   ciblerBtn.addEventListener('click', launchModal);
 });
 
-// OUVERTURE DE LA MODALE.
+// OUVERTURE DE LA MODALE
 function launchModal() {
-  modalbg.classList.add('modal--open');
+  modalbg.classList.add('modal--open'); // (3)
   modalbg.classList.remove('modal--closed');
 }
 
+// FONCTION DE FERMETURE DE LA MODALE via le bouton "X"
+function closeModal() {
+  modalbg.classList.add('modal--closed');
+  modalbg.classList.remove('modal--open');
+}
+
 //
-/* D : FERMETURE DE LA MODALE EN CIBLANT (au choix) LE BOUTON : "FERMER", ou l'icone "X"
+/* D : FERMETURE DE LA MODALE EN CIBLANT (au choix) ou sur LE BOUTON : "FERMER", ou sur l'icone "X"
   afin de supprimer le message final et le bouton "Fermer" ou de simplement fermer le formulaire.
   ------------------------------------------------------------------------------------------------
 
-  (Da) Via l'id : "#button" du bouton "FERMER" on cible la classe :
+  (Da) Via l'id : "#btn-closure" du bouton "FERMER" on cible la classe :
   ".closed-btn--visible" remplaçante de la classe : ".closed-btn",
   et on l'utilise comme écouteur d'évènement du bouton "fermer", pour qu'au click de l'utilisateur,
   elle effectue les opération suivantes ...
@@ -95,7 +101,7 @@ function closeXwindowFinalMessage(cible) {
       finaLMsgClass.remove();
     }
 
-    const btnClosedVisibilityClass = document.querySelector('#button');
+    const btnClosedVisibilityClass = document.querySelector('#btn-closure');
     btnClosedVisibilityClass.classList.replace(
       'closed-btn--visible',
       'closed-btn'
@@ -107,16 +113,10 @@ function closeXwindowFinalMessage(cible) {
   });
 }
 
-// FERMETURE DE LA MODALE par l'icone "X"
+// FERMETURE DE LA MODALE PAR l'ICONE DU BOUTON "X"
 // (Db) Écoute les click du bouton CloseX du formulaire et ferme sa fenêtre.
 const closedXwindowIcon = document.querySelector('.closeX');
 closeXwindowFinalMessage(closedXwindowIcon);
-
-// FONCTION DE FERMETURE DE LA MODALE.
-function closeModal() {
-  modalbg.classList.add('modal--closed');
-  modalbg.classList.remove('modal--open');
-}
 
 /*
 ------------------------------------------------------------------------------------------------
@@ -230,25 +230,25 @@ function testInputCheckboxIsChecked() {
 ------------------------------------------------------------------------------------------------    
  /*
  EXPLICATIONS :
-
-(A)
-(B)
-(C)
+(5) La fonction setAttribute(), permet de récupérer directement dans le fichier CSS, un attribut qui porte le nom :
+"attr(data-error)". Celui-ci, contient le style CSS des nos messages d'erreurs et prévoit de les inclure ::after,
+après, la div Parente de l'input.
+(6) L'attribut CSS : "attr(data-error-visible)" permet que le message d'erreur passe d'une opacité de 0 à 100%, car sa valeur est true. 
  */
 
-// FONCTION (A)
+// FONCTION (A) Affiche les messages si l'input est vide.
 function errorEmptyMessages(container, errorEmptyMsg) {
   container.setAttribute('data-error', errorEmptyMsg); // (5)
   container.setAttribute('data-error-visible', true); // (6)
 }
 
-// FONCTION (B)
+// FONCTION (B) Affiche les messages personnalisés, si les conditions de sont pas remplies.
 function errorPersoMessages(container, msgPerso) {
   container.setAttribute('data-error', msgPerso);
   container.setAttribute('data-error-visible', true);
 }
 
-// FONCTION (C)
+// FONCTION (C) Efface les messages inscrit dans le container Parent.
 function removeMessages(container) {
   container.removeAttribute('data-error');
   container.removeAttribute('data-error-visible');
@@ -267,7 +267,8 @@ const errorDateMsg = 'Vous devez saisir un nombre positif';
 const errorEmail = 'Vous devez saisir une adresse e-mail valide';
 const errorRadioMessage = 'Vous devez choisir une option';
 const errorCheckboxMessage = "Vous devez accepter les conditions d'utilisation";
-const messageFinal_confirmation = 'Merci pour \n votre inscription';
+const messageFinal_confirmation =
+  'Merci !\n votre inscription \n a bien été envoyé';
 
 let msgPerso;
 let inputName;
@@ -438,7 +439,7 @@ et à la vérification, des inputs, si l'un d'eux vaux fasle, la soumission ne p
     switch (ciblerInputCheckbox.id) {
       case 'checkbox1':
         //
-        if (!testInputCheckboxIsChecked(ciblerInputCheckbox.value)) {
+        if (!testInputCheckboxIsChecked(ciblerInputCheckbox)) {
           allInputsValid = false;
           errorEmptyMessages(checkboxConatiner, errorCheckboxMessage);
           //
@@ -495,7 +496,7 @@ function validate() {
   //
   /* C : CIBLER LE BOUTON : "FERMER" et lui ajouter une classe qui le rend visible.
   ---------------------------------------------------------------------------------------------
-  (3a) Cible la classe : "closed-btn" lDU BOUTON "FERMER"
+  (3a) Cible la classe : "closed-btn" DU BOUTON "FERMER"
   (3b) Puis, remplace sa classe "closed-btn" par la classe "closed-btn--visible", de façon dynamique,
   directement dans le fichier HTML, avec la fonction : "classList.replace".
   La classe ".bouton--visible" est stylée directement dans le fichier CSS, et prend la valeur display : block.
@@ -507,12 +508,12 @@ function validate() {
 
   //
   /* D : CIBLER LE BOUTON : "FERMER", le supprimer ainsi que le message final.
-  ------------------------------------------------------------------------------------------------
-  (Da) On cible l'id : "#button" qui remplacera de la classe : ".closed-btn".
+  -------------------------94-----------------------------------------------------------------------
+  (Da) On cible l'id : "#btn-closure" qui remplacera de la classe : ".closed-btn".
   */
 
-  const essai_cible = document.querySelector('#button'); // (Da)
-  closeXwindowFinalMessage(essai_cible);
+  const btnClosure = document.querySelector('#btn-closure'); // (Da)
+  closeXwindowFinalMessage(btnClosure);
   //
   //
 } // fin function validate()

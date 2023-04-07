@@ -249,12 +249,14 @@ dans le fichier JS et à qui une valeur lui sera attribué contenant mon message
 .formData[data-error-visible='true'] .text-control {
   border: 2px solid #e54858;
 }
+
 /* 
 input[data-error]::after {
     content: attr(data-error);
     font-size: 0.4em;
     color: red;
 } */
+
 .checkbox-label,
 .checkbox2-label {
   position: relative;
@@ -513,7 +515,7 @@ Rendu invisible du closed-btn "fermer"
 
 /*
 Rendre visible la modale => Ouverture de la modale
-Rendre visible  le formulaire avec l'ajout d'une classe "d-block"
+Rendre visible le formulaire avec l'ajout d'une classe "d-block"
 */
 
 .bground.modal--open,
